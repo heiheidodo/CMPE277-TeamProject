@@ -56,6 +56,11 @@ app.put("/user/:email/deny/:recipientEmail", user.deny);
 app.put("/user/:email/follow/:recipientEmail", user.follow);
 app.get("/user/:anotherEmai/from/:email", user.getAnotherUser);
 
+app.post("/post", post.create);
+//app.get("/post/public", post.getPublic);
+app.get("/post/:email", post.getUserPost);
+app.get("/post/:email/timeline", post.getUserTimeline);
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
