@@ -4,72 +4,72 @@
 
 APIs:
 
-app.post("/user", user.create);
-body: 
-{ email: "xxx",
-  password: "xxxx",
+app.post("/user", user.create);<br>
+body: <br>
+{ email: "xxx",<br>
+  password: "xxxx",<br>
   .....
-}
+}  <br><br>
  
-return 
-{dup: true} email has already existed.
-{dup: false}
+return <br>
+{dup: true} email has already existed.<br>
+{dup: false} <br><br>
  
-app.put("/user", user.update);
-body:
-user's information
+app.put("/user", user.update);<br>
+body:<br>
+user's information <br>
 
-return:
-latest user's information
+return:<br>
+latest user's information<br>
 
-app.put("/user/verify", user.verify);
-body:
-{
-    email: "xxx",
-    password:"xxxx",
-    code: "xxx"
-}
+app.put("/user/verify", user.verify);<br>
+body:<br>
+{<br>
+    email: "xxx", <br>
+    password:"xxxx",<br>
+    code: "xxx"<br>
+}<br>
 
-return
-{verified :true} or 
-{verified: false}
+return<br>
+{verified :true} or <br>
+{verified: false}<br>
 
 
-app.post("/user/signIn", user.signIn);
-body: {
-    email: "xxx",
-    password: "xxx"
-    }
+app.post("/user/signIn", user.signIn);<br>
+body: {<br>
+    email: "xxx",<br>
+    password: "xxx"<br>
+    }<br><br>
 
-return: 
-{ verified: true}
-{ verified: false}
+return: <br>
+{ verified: true}<br>
+{ verified: false}<br>
     
-app.post("/user/signOut", user.signOut);
-body :{
- email: "xxxx"
- }
-return {}
+app.post("/user/signOut", user.signOut);<br>
+body :{<br>
+ email: "xxxx"<br>
+ }<br>
+return {}<br>
 
-app.get("/user/:email", user.get);
-return user information json
+app.get("/user/:email", user.get);<br>
+return user information json<br>
 
-app.get("/users", user.getUsers);
-return user information jsonArray
+app.get("/users", user.getUsers);<br>
+return user information jsonArray<br>
 
-app.get("/users/:email/pending", user.getPendingUsers);
-return all pending user information jsonArray
+app.get("/users/:email/pending", user.getPendingUsers);<br>
+return all pending user information jsonArray<br>
 
-app.put("/user/:email/request/:recipientEmail", user.request);
-return {}
-app.put("/user/:email/accept/:recipientEmail", user.accept);
-return {}
+app.put("/user/:email/request/:recipientEmail", user.request);<br>
+return {}<br>
+app.put("/user/:email/accept/:recipientEmail", user.accept);<br>
+return {}<br>
 
-app.put("/user/:email/deny/:recipientEmail", user.deny);
+app.put("/user/:email/deny/:recipientEmail", user.deny);<br>
 
-return {}
-app.put("/user/:email/follow/:recipientEmail", user.follow);
+return {}<br>
+app.put("/user/:email/follow/:recipientEmail", user.follow);<br>
 
-return {}
-app.get("/user/:anotherEmail/from/:email", user.getAnotherUser);
-another user information json
+return {}<br>
+app.get("/user/:anotherEmail/from/:email", user.getAnotherUser);<br>
+another user information json<br>
