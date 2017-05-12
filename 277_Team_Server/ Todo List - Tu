@@ -1,0 +1,2 @@
+1. 得到user的email retrieve user所有的post
+2. 得到一堆user可看到post的email array 然后retrive 所有的post 按照之间顺序 降序排序
