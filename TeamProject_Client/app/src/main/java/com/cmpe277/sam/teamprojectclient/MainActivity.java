@@ -15,13 +15,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_four_buttons);
+        setContentView(R.layout.activity_main);
 
         bottomBar = BottomBar.attach(this, savedInstanceState);
 
         bottomBar.setFragmentItems(getSupportFragmentManager(), R.id.fragmentContainer,
                 new BottomBarFragment(TimeLineFragment.newInstance("timeline information"), R.drawable.ic_action_name, "TimeLine"),
                 new BottomBarFragment(MessageFragment.newInstance("Message information"), R.drawable.ic_action_name, "Message"),
+                new BottomBarFragment(PostFragment.newInstance("post"), R.drawable.ic_action_name, "Post"),
                 new BottomBarFragment(FriendFragment.newInstance("Friends"), R.drawable.ic_action_name, "Friends"),
                 new BottomBarFragment(MeFragment.newInstance("My Profile."), R.drawable.ic_action_name, "Me")
         );
@@ -29,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
         // Setting colors for different tabs when there's more than three of them.
         bottomBar.mapColorForTab(0, "#3B494C");
         bottomBar.mapColorForTab(1, "#00796B");
-        bottomBar.mapColorForTab(2, "#7B1FA2");
-        bottomBar.mapColorForTab(3, "#FF5252");
+        bottomBar.mapColorForTab(2, "#032145");
+        bottomBar.mapColorForTab(3, "#7B1FA2");
+        bottomBar.mapColorForTab(4, "#FF5252");
 
         bottomBar.setOnItemSelectedListener(new OnTabSelectedListener() {
             @Override

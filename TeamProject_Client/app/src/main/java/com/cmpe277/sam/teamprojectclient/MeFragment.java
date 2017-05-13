@@ -17,14 +17,14 @@ public class MeFragment extends Fragment {
     public MeFragment() {
     }
 
-    public static MessageFragment newInstance(String text) {
+    public static MeFragment newInstance(String text) {
         Bundle args = new Bundle();
         args.putString(STARTING_TEXT, text);
 
-        MessageFragment messageFragment = new MessageFragment();
-        messageFragment.setArguments(args);
+        MeFragment meFragment = new MeFragment();
+        meFragment.setArguments(args);
 
-        return messageFragment;
+        return meFragment;
     }
 
     @Nullable

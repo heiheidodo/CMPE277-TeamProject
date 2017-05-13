@@ -3,4 +3,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <array name="timeline_test">
+        <item>item1</item>
+        <item>item2</item>
+        <item>item3</item>
+    </array>
 </resources>
