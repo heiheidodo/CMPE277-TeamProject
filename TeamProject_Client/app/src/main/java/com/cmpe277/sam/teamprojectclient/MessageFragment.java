@@ -6,30 +6,35 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MessageFragment extends Fragment {
-    private static final String STARTING_TEXT = "Four Buttons Bottom Navigation";
+
+    Button btnMessage;
 
     public MessageFragment() {
+
     }
 
     public static MessageFragment newInstance(String text) {
-        Bundle args = new Bundle();
-        args.putString(STARTING_TEXT, text);
 
         MessageFragment messageFragment = new MessageFragment();
-        messageFragment.setArguments(args);
-
         return messageFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(getArguments().getString(STARTING_TEXT));
-
-        return textView;
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
+        btnMessage = (Button) view.findViewById(R.id.btnMessage);
+        btnMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MessageDialog messageDialog = new MessageDialog(getActivity());
+                messageDialog.show();
+            }
+        });
+        return view;
     }
 }
