@@ -10,13 +10,14 @@ import android.widget.Toast;
 
 public class SignUpActivity extends AppCompatActivity implements AsyncResponse{
 
-    TextView txtEmail, txtPwd, txtVerification;
+    TextView txtEmail, txtPwd, txtVerification, txtName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
 
+        txtName = (TextView) findViewById(R.id.txtName);
         txtEmail = (TextView) findViewById(R.id.txtEmail);
         txtPwd = (TextView) findViewById(R.id.txtPwd);
         txtVerification = (TextView) findViewById(R.id.txtVerification);
@@ -28,6 +29,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncResponse{
             @Override
             public void onClick(View v) {
 
+                String  name = txtName.getText().toString();
                 String email = txtEmail.getText().toString();
                 String pwd = txtPwd.getText().toString();
 
@@ -35,9 +37,9 @@ public class SignUpActivity extends AppCompatActivity implements AsyncResponse{
                     Toast.makeText(SignUpActivity.this, "email invalid", Toast.LENGTH_SHORT).show();
                     return ;
                 }
-//                ConnWorker connWorker = new ConnWorker();
-//                connWorker.delegate = getAsyncResponse();
-//                connWorker.execute("signup", "/user", "POST", email, pwd);
+                ConnWorker connWorker = new ConnWorker();
+                connWorker.delegate = getAsyncResponse();
+                connWorker.execute("signup", "/user", "POST", email, pwd, name);
 
             }
         });
@@ -48,6 +50,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncResponse{
                 String email = txtEmail.getText().toString();
                 String pwd = txtPwd.getText().toString();
                 String code = txtVerification.getText().toString();
+                String  name = txtName.getText().toString();
 
                 if(!isValidEmailAddress(email)){
                     Toast.makeText(SignUpActivity.this, "email invalid", Toast.LENGTH_SHORT).show();
@@ -57,12 +60,12 @@ public class SignUpActivity extends AppCompatActivity implements AsyncResponse{
                     Toast.makeText(SignUpActivity.this, "requirement empty", Toast.LENGTH_SHORT).show();
                     return ;
                 }
-//                ConnWorker connWorker = new ConnWorker();
-//                connWorker.delegate = getAsyncResponse();
-//                connWorker.execute("login", "/user/verify", "PUT", email, pwd, code);
+                ConnWorker connWorker = new ConnWorker();
+                connWorker.delegate = getAsyncResponse();
+                connWorker.execute("login", "/user/verify", "PUT", email, pwd, name, code);
 
                 //test
-                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+//                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
             }
         });
     }

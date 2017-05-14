@@ -61,4 +61,16 @@
         android:layout_alignEnd="@+id/txtVerification"
         android:layout_marginRight="18dp"
         android:layout_marginEnd="18dp" />
+
+    <EditText
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/txtEmail"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/txtEmail"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Name" />
 </RelativeLayout>

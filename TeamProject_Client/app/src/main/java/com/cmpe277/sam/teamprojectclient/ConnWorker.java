@@ -19,7 +19,7 @@ import java.net.URL;
 public class ConnWorker extends AsyncTask<String, Integer, String> {
 
     HttpURLConnection conn;
-    public static String basicUrl = "xxx";
+    public static String basicUrl = "http://54.219.190.254:3000";
     public AsyncResponse delegate = null;
     DataOutputStream wr;
     InputStreamReader isr;
@@ -31,7 +31,8 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
             if(param[0] == "signup"){
                 URL url = new URL(basicUrl+param[1]);
                 conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("Content-Type", "application/json; charset=UTF8");
+                conn.setRequestProperty("Content-Type", "application/json"); // dont use utf-8 dont know why
+                conn.setRequestProperty("Accept", "application/json"); // accept json response from server
                 conn.setReadTimeout(10000000);
                 conn.setConnectTimeout(15000000);
                 conn.setRequestMethod(param[2]);
@@ -39,13 +40,16 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 conn.setDoOutput(true);
 
                 JSONObject req = new JSONObject();
-                if(param[2]!=null)
-                    req.put("email", param[3]);
                 if(param[3]!=null)
+                    req.put("email", param[3]);
+                if(param[4]!=null)
                     req.put("password", param[4]);
+                if(param[5]!=null)
+                    req.put("screenName", param[5]);
 
                 wr = new DataOutputStream(conn.getOutputStream());
                 wr.writeBytes(req.toString());
+                System.out.println(req.toString());
                 wr.flush();
                 wr.close();
 
@@ -59,14 +63,17 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 responseStreamReader.close();
                 String response = stringBuilder.toString();
                 JSONObject responseJson = new JSONObject(response);
+                System.out.println(conn.getResponseCode());
                 if((boolean)responseJson.get("dup") == true) return "duplicate user";
                 else return "sign up success";
+
 
             }else if(param[0] == "login"){
 
                 URL url = new URL(basicUrl+param[1]);
                 conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("Content-Type", "application/json; charset=UTF8");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
                 conn.setReadTimeout(10000000);
                 conn.setConnectTimeout(15000000);
                 conn.setRequestMethod(param[2]);
@@ -78,6 +85,10 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                     req.put("email", param[3]);
                 if(param[4]!=null)
                     req.put("password", param[4]);
+                if(param[5]!=null)
+                    req.put("screenName", param[5]);
+                if(param[6]!=null)
+                    req.put("code", param[6]);
 
                 wr = new DataOutputStream(conn.getOutputStream());
                 wr.writeBytes(req.toString());
