@@ -24,9 +24,8 @@ exports.create = function (req, res){
     });
 };
 
-exports.getUserPost = function(req, res){
+exports.getUserPost = function(email, callback){
     var col = mongoDB.getdb().collection(collectionName);
-    var email = req.params.email;
     
     col.find({email: email}, function (err, results){
 	if (err)
@@ -35,14 +34,41 @@ exports.getUserPost = function(req, res){
 	}
 	else
 	{
-	    /* to do: return by chronical order */
+	    insertionSort(results, "time");
 	    console.log(results);
-	    res.send(results);
+	    callback(null, results);
 	}
     });
 };
 
-exports.getUserTimeline = function (req, res){
+exports.getUserTimeline = function (emails, callback){
     var col = mongoDB.getdb().collection(collectionName);
-    /* to do: a list of emails */
+   
+    col.find({email: {$all: emails}}), function (err, results)
+    {
+	if (err)
+	{
+	    console.log(err);
+	}
+	else
+	{
+	    insertionSort(results, "time");
+	    console.log(results);
+	    callback(null, results);
+	}
+    }
 };
+
+function insertionSort(files,attrToSortBy){
+  for(var k=1; k < files.length; k++){
+     for(var i=k; i > 0 && new Date(files[i][attrToSortBy]) < 
+       new Date(files[i-1][attrToSortBy]); i--){
+
+        var tmpFile = files[i];
+        files[i] = files[i-1];
+        files[i-1] = tmpFile;
+
+     }
+  }
+
+}
