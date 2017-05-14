@@ -1,10 +1,12 @@
+/*jslint node: true */
+'use strict';
 var express = require('express'),
     path = require('path'),
     favicon = require('serve-favicon'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    session = require('express-session'),
+    session = require('client-sessions'),
     index = require('./routes/index'),
     users = require('./routes/users'),
     user = require('./routes/user'),
@@ -28,17 +30,17 @@ app.use('/', index);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 app.use(session({
-	cookieName:'session',
+	cookieName: 'session',
 	secret: 'cmpe277',
 	duration: 253402300000000,
-	activeDuration: 253402300000000,
+	activeDuration: 253402300000000
 }));
 
 app.post("/user", user.create);
@@ -46,7 +48,7 @@ app.put("/user", user.update);
 app.put("/user/verify", user.verify);
 app.get("/user/signIn", user.signIn);
 app.get("/user/signOut", user.signOut);
-app.get("/user/isVerified/:email", user.isVerified);
+//app.get("/user/isVerified/:email", user.isVerified);
 app.get("/user/:email", user.get);
 app.get("/users", user.getUsers);
 app.get("/users/:email/pending", user.getPendingUsers);
@@ -62,19 +64,18 @@ app.get("/post/:email", post.getUserPost);
 app.get("/post/:email/timeline", post.getUserTimeline);
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 module.exports = app;
 
 http.createServer(app).listen(app.get('port'), function () {
-    "use strict";
     console.log('Express server listening on port ' + app.get('port'));
 });

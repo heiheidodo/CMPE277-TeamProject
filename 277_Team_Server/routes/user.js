@@ -26,15 +26,14 @@ exports.create = function (req, res) {
         } else {
             console.log(rows);
             if (undefined !== rows.email) {
-                
                 code = randomstring.generate({length: 6, charset: 'numeric'});
-                insert = {email: email, code: code, password: passwordMD5, varified: false, friends: [], pending: [], follow: []};
-                col.insertOne(insert, function (err, rows) {
-                    
-                    sendEmail(code, email);
-                    res.send({dup: false});
-
-                });
+                console.log("code");
+                console.log(code);
+                
+                req.session.code = code;
+                req.session.email = req.body.email;
+                req.session.password = passwordMD5;
+                res.send({dup: false});
                 
             } else {
                 res.send({dup: true});
@@ -65,30 +64,35 @@ exports.update = function (req, res) {
 exports.verify = function (req, res) {
     
     var email = req.body.email,
-        filter = { email: email, code: req.body.code},
+        passwordMD5 = crypto.createHash('md5').update(req.body.password).digest("hex"),
         col = mongoDB.getdb().collection(collectionName);
     
-    req.body.varified = true;
+    if ((null === req.session) || (undefined === req.session)) {
+        res.send({expired: true});
+        return
+    }
     
-    col.findOneAndUpdate(filter, {$set: req.body}, function (err, rows) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(rows);
-            if (undefined !== rows.email) {
-                
-                res.send({verified: true});
+    if ((req.body.email === req.session.email) && (req.body.code === req.session.code)) {
+        
+        insert = {email: email, code: code, password: passwordMD5, varified: false, friends: [], pending: [], follow: []};
+        col.insertOne(insert, function (err, rows) {
+            
+            if (err) {
+                console.log(err);
             } else {
-                
-                res.send({verified: false});
-                
+                res.send({verified: true});
             }
 
-        }
-    });
+
+        });
+        
+    } else {
+        res.send({verified: false});
+    }
     
 };
 
+/*
 exports.isVerified = function (req, res) {
     
     var col = mongoDB.getdb().collection(collectionName);
@@ -109,7 +113,7 @@ exports.isVerified = function (req, res) {
         }
 
     });
-};
+}; */
 
 
 exports.signIn = function (req, res) {
