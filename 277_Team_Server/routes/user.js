@@ -5,10 +5,39 @@ var mongoDB = require("./mongodb"),
     randomstring = require("randomstring"),
     collectionName = "user",
     crypto = require('crypto'),
-    post = require('./post');
+    post = require('./post'),
+    codeJsonArray = [];
 
 function sendEmail(code, email) {
     /*  sendEmail  ------to be finished-------------------------*/
+}
+
+function saveCode(email, code) {
+    
+    var i = 0;
+    
+    for (i = 0; i < codeJsonArray.length; i = i + 1) {
+        if (email === codeJsonArray[i].email) {
+            codeJsonArray[i].code = code;
+            return;
+        }
+    }
+    
+    codeJsonArray.push({email: email, code: code});
+}
+
+function checkCode(email, code) {
+    
+    var i = 0;
+    
+    for (i = 0; i < codeJsonArray.length; i = i + 1) {
+        if ((email === codeJsonArray[i].email)  && (code === codeJsonArray[i].code)) {
+            return true;
+        }
+    }
+    
+    return false;
+    
 }
 
 exports.create = function (req, res) {
@@ -35,10 +64,10 @@ exports.create = function (req, res) {
                 code = randomstring.generate({length: 6, charset: 'numeric'});
                 console.log("code");
                 console.log(code);
+                
+                saveCode(req.body.email, code);
 
-                req.session.code = code;
-                req.session.email = req.body.email;
-                req.session.password = passwordMD5;
+                console.log(codeJsonArray);
                 res.send({dup: false});
             }
         }
@@ -75,6 +104,7 @@ exports.verify = function (req, res) {
     var email = req.body.email,
         passwordMD5 = crypto.createHash('md5').update(req.body.password).digest("hex"),
         col = mongoDB.getdb().collection(collectionName),
+        screenName = req.body.screenName,
         insert = {};
     
     if ((null === req.session) || (undefined === req.session)) {
@@ -82,9 +112,11 @@ exports.verify = function (req, res) {
         return;
     }
     
-    if ((req.body.email === req.session.email) && (req.body.code === req.session.code)) {
+    console.log(codeJsonArray);
+    
+    if (checkCode(req.body.email, req.body.code)) {
         
-        insert = {email: email, password: passwordMD5, varified: false, friends: [], pending: [], follow: []};
+        insert = {email: email, password: passwordMD5, screenName: screenName, friends: [], pending: [], follow: []};
         col.insertOne(insert, function (err, rows) {
             
             if (err) {

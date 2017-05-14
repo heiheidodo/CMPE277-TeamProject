@@ -6,7 +6,7 @@ var express = require('express'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    session = require('client-sessions'),
+    session = require('express-session'),
     index = require('./routes/index'),
     users = require('./routes/users'),
     user = require('./routes/user'),
@@ -33,10 +33,10 @@ app.use('/users', users);
 
 
 app.use(session({
-	cookieName: 'session',
-	secret: 'cmpe277',
-	duration: 253402300000000,
-	activeDuration: 253402300000000
+    secret: 'cmpe277',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
 }));
 
 app.post("/user", user.create);
@@ -53,6 +53,7 @@ app.put("/user/:email/accept/:recipientEmail", user.accept);
 app.put("/user/:email/deny/:recipientEmail", user.deny);
 app.put("/user/:email/follow/:recipientEmail", user.follow);
 app.get("/user/:anotherEmai/from/:email", user.getAnotherUser);
+app.get('/session', user.session);
 
 app.post("/post", post.create);
 app.get("/post/:email/timeline", post.getUserTimeline);
