@@ -4,7 +4,8 @@
 var mongoDB = require("./mongodb"),
     randomstring = require("randomstring"),
     collectionName = "user",
-    crypto = require('crypto');
+    crypto = require('crypto'),
+    post = require('./post');
 
 function sendEmail(code, email) {
     /*  sendEmail  ------to be finished-------------------------*/
@@ -19,24 +20,26 @@ exports.create = function (req, res) {
         insert = {},
         col = mongoDB.getdb().collection(collectionName);
     
+    
     col.findOne({$or: [{email: email}, {screenName: screenName}]}, function (err, rows) {
         
         if (err) {
             console.log(err);
         } else {
             console.log(rows);
-            if (undefined !== rows.email) {
+            if (rows) {
+                res.send({dup: true});
+                       
+            } else {
+                
                 code = randomstring.generate({length: 6, charset: 'numeric'});
                 console.log("code");
                 console.log(code);
-                
+
                 req.session.code = code;
                 req.session.email = req.body.email;
                 req.session.password = passwordMD5;
                 res.send({dup: false});
-                
-            } else {
-                res.send({dup: true});
             }
         }
 
@@ -53,9 +56,15 @@ exports.update = function (req, res) {
         if (err) {
             console.log(err);
         } else {
+            console.log("rows------1");
             console.log(rows);
-            /* Get the user's all the post order by post time --------------------------------to be finished  */
-            res.send(rows);
+            post.getUserPost(rows.email, function (err, result) {
+                rows.posts = result;
+                console.log("rows------2");
+                console.log(rows);
+                res.send(rows);
+            });
+            
         }
     });
     
@@ -65,16 +74,17 @@ exports.verify = function (req, res) {
     
     var email = req.body.email,
         passwordMD5 = crypto.createHash('md5').update(req.body.password).digest("hex"),
-        col = mongoDB.getdb().collection(collectionName);
+        col = mongoDB.getdb().collection(collectionName),
+        insert = {};
     
     if ((null === req.session) || (undefined === req.session)) {
         res.send({expired: true});
-        return
+        return;
     }
     
     if ((req.body.email === req.session.email) && (req.body.code === req.session.code)) {
         
-        insert = {email: email, code: code, password: passwordMD5, varified: false, friends: [], pending: [], follow: []};
+        insert = {email: email, password: passwordMD5, varified: false, friends: [], pending: [], follow: []};
         col.insertOne(insert, function (err, rows) {
             
             if (err) {
@@ -129,10 +139,14 @@ exports.signIn = function (req, res) {
             console.log(err);
         } else {
             console.log(rows);
-            if (undefined !== rows.email) {
+            if (rows) {
                 
-                /* Get the user's all the post order by post time --------------------------------to be finished  */
-                res.send({checked: true, User: rows});
+                post.getUserPost(rows.email, function (err, result) {
+                    rows.posts = result;
+                    console.log("rows------2");
+                    console.log(rows);
+                    res.send({checked: true, User: rows});
+                });
                 
             } else {
                 res.send({checked: false});
@@ -156,10 +170,14 @@ exports.get = function (req, res) {
             console.log(err);
         } else {
             console.log(rows);
-            if (undefined !== rows.email) {
+            if (rows) {
                 
-                /* Get the user's all the post order by post time --------------------------------to be finished  */
-                res.send(rows);
+                post.getUserPost(rows.email, function (err, result) {
+                    rows.posts = result;
+                    console.log("rows------2");
+                    console.log(rows);
+                    res.send(rows);
+                });
                 
             } else {
                 res.send({msg: "Email Not Found."});
@@ -402,7 +420,7 @@ exports.getAnotherUser = function (req, res) {
             console.log(err);
         } else {
             console.log(rows);
-            if (undefined !== rows.email) {
+            if (rows) {
                 
                 /* Get the user's all the post order by post time --------------------------------to be finished  */
                 if (hasJsonObject("email", email, rows.friend)) {
@@ -413,7 +431,15 @@ exports.getAnotherUser = function (req, res) {
                 
                 if (hasJsonObject("email", email, rows.follow)) { canFollow = false; }
                 
-                res.send({user: rows, canRequest: canRequest, canFollow: canFollow});
+                
+                post.getUserPost(rows.email, function (err, result) {
+                    rows.posts = result;
+                    console.log("rows------2");
+                    console.log(rows);
+                    res.send({user: rows, canRequest: canRequest, canFollow: canFollow});
+                });
+                
+                
                 
             } else {
                 res.send({msg: "Email Not Found."});
