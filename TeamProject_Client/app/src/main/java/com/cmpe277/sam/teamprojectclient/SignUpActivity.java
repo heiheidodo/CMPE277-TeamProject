@@ -47,25 +47,32 @@ public class SignUpActivity extends AppCompatActivity implements AsyncResponse{
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                test
+//                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                 String email = txtEmail.getText().toString();
                 String pwd = txtPwd.getText().toString();
                 String code = txtVerification.getText().toString();
                 String  name = txtName.getText().toString();
-
+                UserInfo userInfo = UserInfo.getInstance();
+                userInfo.setScreenName(name);
+                userInfo.setEmail(email);
                 if(!isValidEmailAddress(email)){
                     Toast.makeText(SignUpActivity.this, "email invalid", Toast.LENGTH_SHORT).show();
                     return ;
                 }
-                if(pwd == null || code == null){
+                if(pwd.equals("")){
                     Toast.makeText(SignUpActivity.this, "requirement empty", Toast.LENGTH_SHORT).show();
                     return ;
                 }
                 ConnWorker connWorker = new ConnWorker();
                 connWorker.delegate = getAsyncResponse();
-                connWorker.execute("login", "/user/verify", "PUT", email, pwd, name, code);
 
-                //test
-//                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                if(code.equals("")){
+                    connWorker.execute("login", "/user/signIn", "POST", email, pwd, null, null);
+                }else{
+                    connWorker.execute("login", "/user/verify", "PUT", email, pwd, name, code);
+                }
+
             }
         });
     }

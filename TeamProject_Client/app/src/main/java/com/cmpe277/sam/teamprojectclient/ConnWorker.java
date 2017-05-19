@@ -2,6 +2,7 @@ package com.cmpe277.sam.teamprojectclient;
 
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -108,6 +109,68 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 if((boolean)responseJson.get("verified") == true) return "verify success";
                 else return "verify fail";
 
+            }else if(param[0] == "post"){
+                URL url = new URL(basicUrl+param[1]);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setReadTimeout(10000000);
+                conn.setConnectTimeout(15000000);
+                conn.setRequestMethod(param[2]);
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                JSONObject req = new JSONObject();
+                if(param[3]!=null)
+                    req.put("email", param[3]);
+                if(param[4]!=null)
+                    req.put("screenName", param[4]);
+                if(param[5]!=null)
+                    req.put("text", param[5]);
+                if(param[6]!=null)
+                    req.put("pic", param[6]);
+
+                wr = new DataOutputStream(conn.getOutputStream());
+                wr.writeBytes(req.toString());
+                wr.flush();
+                wr.close();
+
+                InputStream responseStream = new BufferedInputStream(conn.getInputStream());
+                BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(responseStream));
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseStreamReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                responseStreamReader.close();
+                String response = stringBuilder.toString();
+                JSONObject responseJson = new JSONObject(response);
+                if((boolean)responseJson.get("posted") == true) return "post success";
+                else return "post fail";
+            }else if(param[0] == "timeline"){
+
+                URL url = new URL(basicUrl+param[1]);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setReadTimeout(10000000);
+                conn.setConnectTimeout(15000000);
+                conn.setRequestMethod(param[2]);
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                InputStream responseStream = new BufferedInputStream(conn.getInputStream());
+                BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(responseStream));
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseStreamReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                responseStreamReader.close();
+                String response = stringBuilder.toString();
+                JSONArray responseJson = new JSONArray(response);
+                if(responseJson.length() != 0) return "post success";
+                else return "post fail";
             }
 
 

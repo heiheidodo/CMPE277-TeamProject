@@ -25,7 +25,7 @@ import android.widget.TextView;
  */
 
 
-public class TimeLineFragment extends ListFragment implements AdapterView.OnItemClickListener{
+public class TimeLineFragment extends ListFragment implements AdapterView.OnItemClickListener, AsyncResponse{
 
     private static final String STARTING_TEXT = "Four Buttons Bottom Navigation";
 
@@ -43,13 +43,16 @@ public class TimeLineFragment extends ListFragment implements AdapterView.OnItem
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("oncreateview", "create list view");
         View view = inflater.inflate(R.layout.fragment_time_line, container, false);
+        ConnWorker connWorker = new ConnWorker();
+        connWorker.execute("timeline", "/post/"+UserInfo.getInstance().getEmail()+"/timeline", "GET");
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d("timeline", "create list view");
+        Log.d("onactivitycreate", "create list view");
         super.onActivityCreated(savedInstanceState);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.timeline_test, android.R.layout.simple_list_item_1);
         setListAdapter(adapter);
@@ -58,6 +61,11 @@ public class TimeLineFragment extends ListFragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void getResponse(String str) {
 
     }
 }
