@@ -3,8 +3,8 @@
 
 var mongoDB = require("./mongodb"),
     collectionName = "post",
-    user = require("./user");
-
+    user = require("./user"),
+    timestamp = require('time-stamp');
 
 function insertionSort(files, attrToSortBy) {
     var k,
@@ -34,7 +34,7 @@ exports.create = function (req, res) {
     
     console.log(time);
 
-    query = {screenName: screenName, email: email, text: text, pic: pic, time: time};
+    query = {screenName: screenName, email: email, text: text, pic: pic, time: timestamp('YYYY:MM:DD:HH:mm:ss:ms')};
     col.insertOne(query, function (err, results) {
         if (err) {
             res.send({posted: false});
@@ -47,11 +47,11 @@ exports.create = function (req, res) {
 exports.getUserPost = function (email, callback) {
     var col = mongoDB.getdb().collection(collectionName);
     
-    col.find({email: email}, function (err, results) {
+                                               
+    col.find({email: email}).sort({time: -1}).toArray(function (err, results) {
         if (err) {
             console.log(err);
         } else {
-            insertionSort(results, "time");
             console.log(results);
             callback(null, results);
         }
@@ -65,11 +65,10 @@ exports.getUserTimeline = function (req, res) {
     user.getVisiblePosterEmails(email, function (err, emails) {
         var col = mongoDB.getdb().collection(collectionName);
    
-        col.find({email: {$all: emails}}, function (err, results) {
+        col.find({email: email}).sort({time: -1}).toArray(function (err, results) {
             if (err) {
                 console.log(err);
             } else {
-                insertionSort(results, "time");
                 console.log(results);
                 res.send(results);
             }

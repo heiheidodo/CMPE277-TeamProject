@@ -173,15 +173,10 @@ exports.signIn = function (req, res) {
             console.log(rows);
             if (rows) {
                 
-                post.getUserPost(rows.email, function (err, result) {
-                    rows.posts = result;
-                    console.log("rows------2");
-                    console.log(rows);
-                    res.send({checked: true, User: rows});
-                });
+                res.send({verified: true});
                 
             } else {
-                res.send({checked: false});
+                res.send({verified: false});
             }
         }
 
@@ -408,18 +403,21 @@ exports.getVisiblePosterEmails = function (email, callback) {
                 callback({msg: "Email not found"});
             } else {
                 resArray = mergeTwoJsonArray(rows.friends, rows.follow, "email");
-                
-                col.find({visibility: "public"}).toArray(function (err, rows) {
+                resArray.push({email: email});
+                callback(null, resArray);
+                /*
+                col.find({visibility: "public"}).toArray(function (visibilityErr, visibilityRows) {
         
-                    if (err) {
-                        console.log(err);
+                    if (visibilityErr) {
+                        console.log(visibilityErr);
                     } else {
-                        console.log(rows);
-                        resArray = mergeTwoJsonArray(resArray, rows, "email");
-                        callback(null, rows);
+                        console.log(visibilityRows);
+                        resArray = mergeTwoJsonArray(resArray, visibilityRows, "email");
+                        
+                        callback(null, resArray);
                     }
 
-                });
+                });*/
             }
             
             
