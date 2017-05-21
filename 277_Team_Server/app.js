@@ -42,8 +42,8 @@ app.use(session({
 app.post("/user", user.create);
 app.put("/user", user.update);
 app.put("/user/verify", user.verify);
-app.get("/user/signIn", user.signIn);
-app.get("/user/signOut", user.signOut);
+app.post("/user/signIn", user.signIn);
+app.post("/user/signOut", user.signOut);
 //app.get("/user/isVerified/:email", user.isVerified);
 app.get("/user/:email", user.get);
 app.get("/users", user.getUsers);
@@ -53,7 +53,7 @@ app.put("/user/:email/accept/:recipientEmail", user.accept);
 app.put("/user/:email/deny/:recipientEmail", user.deny);
 app.put("/user/:email/follow/:recipientEmail", user.follow);
 app.get("/user/:anotherEmai/from/:email", user.getAnotherUser);
-app.get('/session', user.session);
+//app.get("/session", user.session);
 
 app.post("/post", post.create);
 app.get("/post/:email/timeline", post.getUserTimeline);
