@@ -28,7 +28,8 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
     public AsyncResponse delegate = null;
     DataOutputStream wr;
     InputStreamReader isr;
-    private ArrayList<TimeLineModel> timeLineArr;
+    private ArrayList returnArr;
+//    private ArrayList<PublicProfileModel> publicProfileArr;
 
     @Override
     protected String doInBackground(String... param) {
@@ -174,7 +175,7 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 }
                 responseStreamReader.close();
                 String response = stringBuilder.toString();
-                timeLineArr = new ArrayList<>();
+                returnArr = new ArrayList<>();
                 JSONArray responseJson = new JSONArray(response);
 //                System.out.println(responseJson);
                 for(int i = 0; i < responseJson.length(); i++){
@@ -187,7 +188,44 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                         itemModel.setPic(decodedByte);
                     }
-                    timeLineArr.add(itemModel);
+                    returnArr.add(itemModel);
+                }
+                if(responseJson.length() != 0) return "post success";
+                else return "post fail";
+            }else if(param[0] == "publicUsers"){
+
+                URL url = new URL(basicUrl+param[1]);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setReadTimeout(10000000);
+                conn.setConnectTimeout(15000000);
+                conn.setRequestMethod(param[2]);
+                conn.setDoInput(true);
+//                conn.setDoOutput(true);
+
+                InputStream responseStream = new BufferedInputStream(conn.getInputStream());
+                BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(responseStream));
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseStreamReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                responseStreamReader.close();
+                String response = stringBuilder.toString();
+                returnArr = new ArrayList<>();
+                JSONArray responseJson = new JSONArray(response);
+//                System.out.println(responseJson);
+                for(int i = 0; i < responseJson.length(); i++){
+                    PublicProfileModel itemModel = new PublicProfileModel();
+                    JSONObject timelineItem = responseJson.getJSONObject(i);
+                    itemModel.setScreenName(timelineItem.getString("screenName"));
+//                    if(timelineItem.getString("pic") != ""){
+//                        byte[] decodedString = Base64.decode(timelineItem.getString("pic"), Base64.DEFAULT);
+//                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//                        itemModel.setPic(decodedByte);
+//                    }
+                    returnArr.add(itemModel);
                 }
                 if(responseJson.length() != 0) return "post success";
                 else return "post fail";
@@ -205,7 +243,7 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String str) {
         super.onPostExecute(str);
         delegate.getResponse(str);
-        delegate.getJSONResponse(timeLineArr);
+        delegate.getJSONResponse(returnArr);
     }
 
 }
