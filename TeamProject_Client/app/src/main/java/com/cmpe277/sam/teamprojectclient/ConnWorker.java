@@ -1,6 +1,9 @@
 package com.cmpe277.sam.teamprojectclient;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by sam on 5/12/17.
@@ -24,6 +28,7 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
     public AsyncResponse delegate = null;
     DataOutputStream wr;
     InputStreamReader isr;
+    private ArrayList<TimeLineModel> timeLineArr;
 
     @Override
     protected String doInBackground(String... param) {
@@ -147,6 +152,7 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 JSONObject responseJson = new JSONObject(response);
                 if((boolean)responseJson.get("posted") == true) return "post success";
                 else return "post fail";
+
             }else if(param[0] == "timeline"){
 
                 URL url = new URL(basicUrl+param[1]);
@@ -157,7 +163,7 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 conn.setConnectTimeout(15000000);
                 conn.setRequestMethod(param[2]);
                 conn.setDoInput(true);
-                conn.setDoOutput(true);
+//                conn.setDoOutput(true);
 
                 InputStream responseStream = new BufferedInputStream(conn.getInputStream());
                 BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(responseStream));
@@ -168,7 +174,21 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 }
                 responseStreamReader.close();
                 String response = stringBuilder.toString();
+                timeLineArr = new ArrayList<>();
                 JSONArray responseJson = new JSONArray(response);
+//                System.out.println(responseJson);
+                for(int i = 0; i < responseJson.length(); i++){
+                    TimeLineModel itemModel = new TimeLineModel();
+                    JSONObject timelineItem = responseJson.getJSONObject(i);
+                    itemModel.setScreenName(timelineItem.getString("screenName"));
+                    itemModel.setText(timelineItem.getString("text"));
+                    if(timelineItem.getString("pic") != ""){
+                        byte[] decodedString = Base64.decode(timelineItem.getString("pic"), Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        itemModel.setPic(decodedByte);
+                    }
+                    timeLineArr.add(itemModel);
+                }
                 if(responseJson.length() != 0) return "post success";
                 else return "post fail";
             }
@@ -185,5 +205,7 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String str) {
         super.onPostExecute(str);
         delegate.getResponse(str);
+        delegate.getJSONResponse(timeLineArr);
     }
+
 }

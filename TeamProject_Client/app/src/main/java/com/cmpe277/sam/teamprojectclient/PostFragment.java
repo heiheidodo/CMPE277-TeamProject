@@ -17,9 +17,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by sam on 5/12/17.
@@ -118,6 +121,12 @@ public class PostFragment extends Fragment implements AsyncResponse{
         ft.replace(R.id.fragmentContainer, new TimeLineFragment(), "jumpToTimeLine");
         ft.commit();
     }
+
+    @Override
+    public void getJSONResponse(ArrayList array) {
+
+    }
+
 
     public AsyncResponse getAsyncResponse(){
         return this;

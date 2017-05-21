@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
 public class SignUpActivity extends AppCompatActivity implements AsyncResponse{
 
     TextView txtEmail, txtPwd, txtVerification, txtName;
@@ -89,6 +93,12 @@ public class SignUpActivity extends AppCompatActivity implements AsyncResponse{
         Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
         if(str == "verify success")
             startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+    }
+
+
+    @Override
+    public void getJSONResponse(ArrayList array) {
+
     }
 
     public AsyncResponse getAsyncResponse(){

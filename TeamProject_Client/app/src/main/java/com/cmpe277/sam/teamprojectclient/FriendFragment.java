@@ -42,6 +42,8 @@ public class FriendFragment extends Fragment {
                 startActivity(new Intent(getActivity(), PendingActivity.class));
             }
         });
+        ConnWorker connWorker = new ConnWorker();
+        connWorker.execute();
         return view;
     }
 }
