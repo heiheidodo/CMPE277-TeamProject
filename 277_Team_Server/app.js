@@ -12,7 +12,8 @@ var express = require('express'),
     user = require('./routes/user'),
     http = require('http'),
     post = require('./routes/post'),
-    app = express();
+    app = express(),
+    inMail = require('./routes/inMail');
 
 // view engine setup
 app.set('port', process.env.PORT || 3000);
@@ -28,7 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
+//app.use('/users', users);
 
 
 
@@ -52,7 +53,11 @@ app.put("/user/:email/request/:recipientEmail", user.request);
 app.put("/user/:email/accept/:recipientEmail", user.accept);
 app.put("/user/:email/deny/:recipientEmail", user.deny);
 app.put("/user/:email/follow/:recipientEmail", user.follow);
-app.get("/user/:anotherEmai/from/:email", user.getAnotherUser);
+app.get("/user/:anotherEmail/from/:email", user.getAnotherUser);
+
+app.post("/inMail", inMail.post);
+app.get("/inMail/:email", inMail.get);
+app.delete("/inMail/:id", inMail.del);
 //app.get("/session", user.session);
 
 app.post("/post", post.create);

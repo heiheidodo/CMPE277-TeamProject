@@ -12,6 +12,16 @@ function sendEmail(code, email) {
     /*  sendEmail  ------to be finished-------------------------*/
 }
 
+function hasJsonObject(key, value, array) {
+    var i = 0;
+    
+    for (i = 0; i < array.length; i = i + 1) {
+        if (value === array[i][key]) { return true; }
+    }
+    
+    return false;
+}
+
 function saveCode(email, code) {
     
     var i = 0;
@@ -261,17 +271,39 @@ exports.request = function (req, res) {
         recipientEmail = req.params.recipientEmail,
         col = mongoDB.getdb().collection(collectionName);
     
-    col.updateOne({email: email}, {$push: {pending: {email: recipientEmail}}}, function (err, rows) {
+    col.findOne({email: recipientEmail}, function (err, userRows) {
         
         if (err) {
             console.log(err);
         } else {
-            console.log(rows);
+            console.log(userRows);
+            if (undefined !== userRows.email) {
+                if (hasJsonObject("email", email, userRows.pending)) {
+                    res.send({msg: "Add successfully"});
+                } else {
+                    col.updateOne({email: recipientEmail}, {$push: {pending: {email: email}}}, function (err, rows) {
+        
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log(rows);
 
-            res.send({msg: "Add successfully"});
+                            res.send({msg: "Add successfully"});
+
+                        }
+                    });
+                }
                 
+            } else {
+                
+                res.send({msg: "Email Not Found."});
+
+            }
         }
+        
     });
+    
+    
 };
 
 exports.accept = function (req, res) {
@@ -425,15 +457,7 @@ exports.getVisiblePosterEmails = function (email, callback) {
     });
 };
 
-function hasJsonObject(key, value, array) {
-    var i = 0;
-    
-    for (i = 0; i < array.length; i = i + 1) {
-        if (value === array[i][key]) { return true; }
-    }
-    
-    return false;
-}
+
 
 
 exports.getAnotherUser = function (req, res) {
@@ -453,7 +477,7 @@ exports.getAnotherUser = function (req, res) {
             if (rows) {
                 
                 /* Get the user's all the post order by post time --------------------------------to be finished  */
-                if (hasJsonObject("email", email, rows.friend)) {
+                if (hasJsonObject("email", email, rows.friends)) {
                     canRequest = false;
                 } else if (hasJsonObject("email", email, rows.pending)) {
                     canRequest = false;
