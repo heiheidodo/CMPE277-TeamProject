@@ -1,5 +1,7 @@
 package com.cmpe277.sam.teamprojectclient;
 
+import java.util.ArrayList;
+
 /**
  * Created by sam on 5/18/17.
  */
@@ -7,7 +9,18 @@ package com.cmpe277.sam.teamprojectclient;
 public class UserInfo {
 
     String screenName;
-    String email;
+    String email = "xiaoshan1213@gmail.com";
+
+    public ArrayList<String> getPendingList() {
+        return pendingList;
+    }
+
+    public void setPendingList(ArrayList<String> pendingList) {
+        this.pendingList = pendingList;
+    }
+
+    ArrayList<String> pendingList;
+
     private static UserInfo instance;
 
     public String getScreenName() {
@@ -31,6 +44,7 @@ public class UserInfo {
     public static UserInfo getInstance(){
         if(instance == null){
             instance = new UserInfo();
+
         }
         return instance;
     }

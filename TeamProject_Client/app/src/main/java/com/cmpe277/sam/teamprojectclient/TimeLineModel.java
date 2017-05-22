@@ -9,9 +9,17 @@ import android.graphics.Bitmap;
 public class TimeLineModel {
 
     private String screenName;
+    private String email;
     private String text;
     private Bitmap pic;
 
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail(String email){
+        this.email = email;
+    }
     public String getScreenName() {
         return screenName;
     }

@@ -41,6 +41,7 @@ public class TimelineAdapter extends ArrayAdapter {
             v = li.inflate(resource, null);
             holder.imageView = (ImageView) v.findViewById(R.id.ivImage);
             holder.tvName = (TextView) v.findViewById(R.id.tvName);
+            holder.tvEmail = (TextView) v.findViewById(R.id.tvEmail);
             holder.tvContent = (TextView) v.findViewById(R.id.tvContent);
             v.setTag(holder);
         }else{
@@ -48,6 +49,7 @@ public class TimelineAdapter extends ArrayAdapter {
         }
 
         holder.tvName.setText(timelineList.get(position).getScreenName());
+        holder.tvEmail.setText(timelineList.get(position).getEmail());
         holder.tvContent.setText(timelineList.get(position).getText());
         if(timelineList.get(position).getPic() != null){
             holder.imageView.setImageBitmap(timelineList.get(position).getPic());
@@ -60,6 +62,7 @@ public class TimelineAdapter extends ArrayAdapter {
     static class ViewHolder{
         public ImageView imageView;
         public TextView tvName;
+        public TextView tvEmail;
         public TextView tvContent;
     }
 }

@@ -15,11 +15,18 @@
         android:textColor="#166CED" />
 
     <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test@gmail.com"
+        android:textColor="#166CED" />
+
+    <TextView
         android:id="@+id/tvContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#D64530"
-        android:text="Date of Birth: July 3, 1962" />
+        android:text="i just post a post test" />
 
 
     <ImageView

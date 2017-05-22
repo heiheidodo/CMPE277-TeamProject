@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,19 +40,22 @@ public class PublicProfileAdapter extends ArrayAdapter{
             v = li.inflate(resource, null);
             holder.imageView = (ImageView) v.findViewById(R.id.ivImage);
             holder.tvName = (TextView) v.findViewById(R.id.tvName);
-            holder.btnAdd = (Button) v.findViewById(R.id.btnAdd);
-            holder.btnAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
+            holder.tvEmail = (TextView) v.findViewById(R.id.tvEmail);
+//            holder.btnAdd = (Button) v.findViewById(R.id.btnAdd);
+//            holder.btnAdd.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    ConnWorker connWorker = new ConnWorker();
+//                    connWorker.execute("addFriendRequest", "/user/"+UserInfo.getInstance().getEmail()+"/request"+holder.tvEmail.getText().toString(), "PUT");
+//                }
+//            });
             v.setTag(holder);
         }else{
             holder = (PublicProfileAdapter.ViewHolder) v.getTag();
         }
 
         holder.tvName.setText(publicProfileList.get(position).getScreenName());
+        holder.tvEmail.setText(publicProfileList.get(position).getEmail());
         if(publicProfileList.get(position).getSelfPic() != null){
             holder.imageView.setImageBitmap(publicProfileList.get(position).getSelfPic());
         }
@@ -63,6 +65,7 @@ public class PublicProfileAdapter extends ArrayAdapter{
     static class ViewHolder{
         public ImageView imageView;
         public TextView tvName;
-        public Button btnAdd;
+        public TextView tvEmail;
+//        public Button btnAdd;
     }
 }

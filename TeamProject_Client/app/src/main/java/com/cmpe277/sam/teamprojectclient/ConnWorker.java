@@ -182,6 +182,7 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                     TimeLineModel itemModel = new TimeLineModel();
                     JSONObject timelineItem = responseJson.getJSONObject(i);
                     itemModel.setScreenName(timelineItem.getString("screenName"));
+                    itemModel.setEmail(timelineItem.getString("email"));
                     itemModel.setText(timelineItem.getString("text"));
                     if(timelineItem.getString("pic") != ""){
                         byte[] decodedString = Base64.decode(timelineItem.getString("pic"), Base64.DEFAULT);
@@ -220,6 +221,7 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                     PublicProfileModel itemModel = new PublicProfileModel();
                     JSONObject timelineItem = responseJson.getJSONObject(i);
                     itemModel.setScreenName(timelineItem.getString("screenName"));
+                    itemModel.setEmail(timelineItem.getString("email"));
 //                    if(timelineItem.getString("pic") != ""){
 //                        byte[] decodedString = Base64.decode(timelineItem.getString("pic"), Base64.DEFAULT);
 //                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -229,6 +231,94 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 }
                 if(responseJson.length() != 0) return "post success";
                 else return "post fail";
+            }else if(param[0] == "addFriendRequest"){
+
+                URL url = new URL(basicUrl+param[1]);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setReadTimeout(10000000);
+                conn.setConnectTimeout(15000000);
+                conn.setRequestMethod(param[2]);
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                InputStream responseStream = new BufferedInputStream(conn.getInputStream());
+                BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(responseStream));
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseStreamReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                responseStreamReader.close();
+                String response = stringBuilder.toString();
+                returnArr = new ArrayList<>();
+                JSONArray responseJson = new JSONArray(response);
+//                System.out.println(responseJson);
+                for(int i = 0; i < responseJson.length(); i++){
+                    PublicProfileModel itemModel = new PublicProfileModel();
+                    JSONObject timelineItem = responseJson.getJSONObject(i);
+                    itemModel.setScreenName(timelineItem.getString("screenName"));
+                    itemModel.setEmail(timelineItem.getString("email"));
+//                    if(timelineItem.getString("pic") != ""){
+//                        byte[] decodedString = Base64.decode(timelineItem.getString("pic"), Base64.DEFAULT);
+//                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//                        itemModel.setPic(decodedByte);
+//                    }
+                    returnArr.add(itemModel);
+                }
+                if(responseJson.length() != 0) return "post success";
+                else return "post fail";
+
+            }else if(param[0] == "getPublicPosts"){
+
+                URL url = new URL(basicUrl+param[1]);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setReadTimeout(10000000);
+                conn.setConnectTimeout(15000000);
+                conn.setRequestMethod(param[2]);
+                conn.setDoInput(true);
+//                conn.setDoOutput(true);
+
+                InputStream responseStream = new BufferedInputStream(conn.getInputStream());
+                BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(responseStream));
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseStreamReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                responseStreamReader.close();
+                String response = stringBuilder.toString();
+                returnArr = new ArrayList<>();
+                JSONObject responseJson = new JSONObject(response);
+                System.out.println(responseJson);
+                JSONObject userJson =  responseJson.getJSONObject("user");
+                JSONArray postsArr =  userJson.getJSONArray("posts");
+                JSONArray pendingArr =  userJson.getJSONArray("pending");
+                System.out.println("pending arr from server: "+pendingArr);
+                for(int i = 0; i<pendingArr.length(); i++){
+                    JSONObject pendingItem = pendingArr.getJSONObject(i);
+                    UserInfo.getInstance().setPendingList(new ArrayList<String>());
+                    UserInfo.getInstance().getPendingList().add(pendingItem.getString("email"));
+                }
+                for(int i = 0; i < postsArr.length(); i++){
+                    TimeLineModel itemModel = new TimeLineModel();
+                    JSONObject timelineItem = postsArr.getJSONObject(i);
+                    itemModel.setScreenName(timelineItem.getString("screenName"));
+                    itemModel.setEmail(timelineItem.getString("email"));
+                    itemModel.setText(timelineItem.getString("text"));
+                    if(timelineItem.getString("pic") != ""){
+                        byte[] decodedString = Base64.decode(timelineItem.getString("pic"), Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        itemModel.setPic(decodedByte);
+                    }
+                    returnArr.add(itemModel);
+                }
+                if(responseJson.length() != 0) return "post success";
+                else return "post fail";
+
             }
 
 
