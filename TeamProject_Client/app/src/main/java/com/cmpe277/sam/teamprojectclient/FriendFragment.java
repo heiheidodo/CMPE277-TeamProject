@@ -81,7 +81,7 @@ public class FriendFragment extends Fragment implements  AsyncResponse{
         });
         ConnWorker connWorker = new ConnWorker();
         connWorker.delegate = getAsyncResponse();
-        connWorker.execute("publicUsers", "/users", "GET");
+        connWorker.execute("publicUsers", "/users/" + UserInfo.getInstance().getEmail(), "GET");
         return view;
     }
 

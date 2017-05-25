@@ -219,9 +219,11 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
 //                System.out.println(responseJson);
                 for(int i = 0; i < responseJson.length(); i++){
                     PublicProfileModel itemModel = new PublicProfileModel();
-                    JSONObject timelineItem = responseJson.getJSONObject(i);
-                    itemModel.setScreenName(timelineItem.getString("screenName"));
-                    itemModel.setEmail(timelineItem.getString("email"));
+                    if(responseJson.get(i) != null) {
+                        JSONObject timelineItem = responseJson.getJSONObject(i);
+                        itemModel.setScreenName(timelineItem.getString("screenName"));
+                        itemModel.setEmail(timelineItem.getString("email"));
+                    }
 //                    if(timelineItem.getString("pic") != ""){
 //                        byte[] decodedString = Base64.decode(timelineItem.getString("pic"), Base64.DEFAULT);
 //                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -296,8 +298,10 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 System.out.println(responseJson);
                 JSONObject userJson =  responseJson.getJSONObject("user");
                 JSONArray postsArr =  userJson.getJSONArray("posts");
-                JSONArray pendingArr =  userJson.getJSONArray("pending");
-                System.out.println("pending arr from server: "+pendingArr);
+                Boolean canAdd = responseJson.getBoolean("canRequest");
+                Boolean canFollow = responseJson.getBoolean("canFollow");
+//                JSONArray pendingArr =  userJson.getJSONArray("pending");
+//                System.out.println("pending arr from server: "+pendingArr);
 //                for(int i = 0; i<pendingArr.length(); i++){
 //                    JSONObject pendingItem = pendingArr.getJSONObject(i);
 //                    UserInfo.getInstance().setPendingList(new ArrayList<String>());
@@ -316,8 +320,8 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                     }
                     returnArr.add(itemModel);
                 }
-                if(responseJson.length() != 0) return "post success";
-                else return "post fail";
+                if(responseJson.length() != 0) return canAdd.toString()+canFollow.toString();
+                else return "fail to get the posts and add status";
 
             }else if(param[0] == "getPending"){
 

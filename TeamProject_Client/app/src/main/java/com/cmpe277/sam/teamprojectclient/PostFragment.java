@@ -67,7 +67,7 @@ public class PostFragment extends Fragment implements AsyncResponse{
             public void onClick(View v) {
                 ConnWorker connWorker = new ConnWorker();
                 connWorker.delegate = getAsyncResponse();
-                connWorker.execute("post", "/post", "POST", userInfo.getEmail(), userInfo.getScreenName(), txtPost.getText().toString(), toBase64(imgUPload));
+                connWorker.execute("post", "/post", "POST", userInfo.getEmail(), userInfo.getScreenName(), txtPost.getText().toString(), imgUPload==null?null:toBase64(imgUPload));
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
