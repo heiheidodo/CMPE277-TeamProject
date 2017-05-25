@@ -20,11 +20,11 @@ public class MainActivity extends AppCompatActivity {
         bottomBar = BottomBar.attach(this, savedInstanceState);
 
         bottomBar.setFragmentItems(getSupportFragmentManager(), R.id.fragmentContainer,
-                new BottomBarFragment(TimeLineFragment.newInstance("timeline information"), R.drawable.ic_action_name, "TimeLine"),
-                new BottomBarFragment(MessageFragment.newInstance("Message information"), R.drawable.ic_action_name, "Message"),
-                new BottomBarFragment(PostFragment.newInstance("post"), R.drawable.ic_action_name, "Post"),
-                new BottomBarFragment(FriendFragment.newInstance("Friends"), R.drawable.ic_action_name, "Friends"),
-                new BottomBarFragment(MeFragment.newInstance("My Profile."), R.drawable.ic_action_name, "Me")
+                new BottomBarFragment(TimeLineFragment.newInstance("timeline information"), R.drawable.ic_home_black_24dp, "TimeLine"),
+                new BottomBarFragment(MessageFragment.newInstance("Message information"), R.drawable.ic_mode_comment_black_24dp, "Message"),
+                new BottomBarFragment(PostFragment.newInstance("post"), R.drawable.ic_add_black_24dp, "Post"),
+                new BottomBarFragment(FriendFragment.newInstance("Friends"), R.drawable.ic_group_black_24dp, "Friends"),
+                new BottomBarFragment(MeFragment.newInstance("My Profile."), R.drawable.ic_sentiment_very_satisfied_black_24dp, "Me")
         );
 
         // Setting colors for different tabs when there's more than three of them.

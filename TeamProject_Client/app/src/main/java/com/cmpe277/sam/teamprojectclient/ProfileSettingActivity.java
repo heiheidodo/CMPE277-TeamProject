@@ -429,7 +429,7 @@ public class ProfileSettingActivity extends Activity implements AsyncResponse{
 
     @Override
     public void getResponse(String str) {
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
     }
     @Override
     public void getJSONResponse(ArrayList array) {

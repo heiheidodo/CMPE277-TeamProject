@@ -486,7 +486,7 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 //JSONObject responseJson = new JSONObject(response);
 
             }else if(param[0].equals("getMe")) {
-                URL url = new URL(basicUrl + param[1]+UserInfo.getInstance().getEmail());
+                URL url = new URL(basicUrl + param[1]+"/"+UserInfo.getInstance().getEmail());
                 conn = (HttpURLConnection)url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");

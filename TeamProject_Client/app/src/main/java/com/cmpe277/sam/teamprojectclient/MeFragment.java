@@ -81,7 +81,7 @@ public class MeFragment extends Fragment implements AsyncResponse{
                startActivity(new Intent(getContext(), MyPostActivity.class));
             }
         });
-
+        /*
         me_message_button = (ImageButton)view.findViewById(R.id.me_message_button);
         me_message_button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -89,6 +89,7 @@ public class MeFragment extends Fragment implements AsyncResponse{
                 //To my Message!!!!!!!!!!!!
             }
         });
+        */
 
         btnLogout = (Button) view.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +99,7 @@ public class MeFragment extends Fragment implements AsyncResponse{
 
             }
         });
+
 
         return view;
     }

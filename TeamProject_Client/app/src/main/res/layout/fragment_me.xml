@@ -85,30 +85,6 @@
 
 
         <FrameLayout
-            android:id="@+id/me_message"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:id="@+id/me_message_button"
-                android:layout_width="200dp"
-                android:layout_height="125dp"
-                android:scaleType="fitCenter"
-                android:layout_gravity="center_horizontal"
-                android:background="@null"
-                android:src="@drawable/lan"/>
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="125dp"
-                android:gravity="center"
-                android:text="Messages"
-                android:typeface="monospace"
-                android:textColor="#ff333333"
-                android:textSize="20sp"/>
-        </FrameLayout>
-
-        <FrameLayout
             android:id="@+id/me_setting"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
