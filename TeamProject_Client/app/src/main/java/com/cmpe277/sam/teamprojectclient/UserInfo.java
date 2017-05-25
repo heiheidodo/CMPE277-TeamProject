@@ -7,20 +7,15 @@ import java.util.ArrayList;
  */
 
 public class UserInfo {
-
     String screenName;
-    String email = "xiaoshan1213@gmail.com";
-
-    public ArrayList<String> getPendingList() {
-        return pendingList;
-    }
-
-    public void setPendingList(ArrayList<String> pendingList) {
-        this.pendingList = pendingList;
-    }
-
-    ArrayList<String> pendingList;
-
+    String email;
+    String aboutMe;
+    String location;
+    String profession;
+    String hobby;
+    String visibility;
+    String portrait;
+    String notification;
     private static UserInfo instance;
 
     public String getScreenName() {
@@ -39,13 +34,34 @@ public class UserInfo {
         this.email = email;
     }
 
-    public UserInfo(){}
+    public String getAboutMe() {return this.aboutMe;}
+    public void setAboutMe(String aboutMe) {this.aboutMe = aboutMe;}
+
+    public String getLocation() {return this.location;}
+    public void setLocation(String location) {this.location = location;}
+
+    public String getHobby() {return this.hobby;}
+    public void setHobby(String hobby) {this.hobby = hobby;}
+
+    public String getVisibility() {return this.visibility;}
+    public void setVisibility(String visibility) {this.visibility = visibility;}
+
+    public String getProfession() {return this.profession;}
+    public void setProfession(String profession) {this.profession = profession;}
+
+    public String getPortrait() {return this.portrait;}
+    public void setPortrait(String portrait) {this.portrait = portrait;}
+
+    public String getNotification() {return this.notification;}
+    public void setNotification(String notification) {this.notification = notification;}
+
+    //public UserInfo(){}
 
     public static UserInfo getInstance(){
         if(instance == null){
             instance = new UserInfo();
-
         }
         return instance;
     }
 }
+

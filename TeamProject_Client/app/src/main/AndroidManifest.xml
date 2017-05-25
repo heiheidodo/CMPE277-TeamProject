@@ -32,6 +32,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".PendingActivity" />
         <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileSettingActivity"></activity>
+        <activity android:name=".MyPostActivity" />
     </application>
 
 </manifest>

@@ -1,30 +1,36 @@
 package com.cmpe277.sam.teamprojectclient;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class PendingActivity extends AppCompatActivity implements AsyncResponse, PendingAdapter.CallbackToPendingAct {
+/**
+ * Created by sam on 5/24/17.
+ */
 
-    ListView lvPending;
-    PendingAdapter adapter;
+public class MyPostActivity extends AppCompatActivity implements AsyncResponse, PendingAdapter.CallbackToPendingAct{
+
+    ListView lvPost;
+    TimelineAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pending);
-        lvPending = (ListView) findViewById(R.id.pendingList);
+        setContentView(R.layout.activity_mypost);
+        lvPost = (ListView) findViewById(R.id.lvMyPost);
         ArrayList arrTest = new ArrayList();
-        arrTest.add("None");
-        adapter = new PendingAdapter(getApplication(), R.layout.pending_item, arrTest);
-        adapter.setCallback(this);
-        lvPending.setAdapter(adapter);
+        TimeLineModel testModel = new TimeLineModel();
+        testModel.setEmail("test");
+        testModel.setScreenName("test");
+        testModel.setText("test");
+        arrTest.add(testModel);
+        adapter = new TimelineAdapter(getApplication(), R.layout.timeline_item, arrTest);
+        lvPost.setAdapter(adapter);
         ConnWorker connWorker = new ConnWorker();
         connWorker.delegate = this;
-        connWorker.execute("getPending", "/users/"+UserInfo.getInstance().getEmail()+"/pending", "GET");
+        connWorker.execute("getMyPosts", "/user/"+UserInfo.getInstance().getEmail(), "GET");
     }
 
     @Override
@@ -38,7 +44,7 @@ public class PendingActivity extends AppCompatActivity implements AsyncResponse,
 
     @Override
     public void getJSONResponse(ArrayList array) {
-        System.out.println("get the pending arr from server");
+        System.out.println("get the my post arr from server");
         if(!array.isEmpty()){
             adapter.clear();
             adapter.addAll(array);
@@ -53,5 +59,4 @@ public class PendingActivity extends AppCompatActivity implements AsyncResponse,
     public AsyncResponse getResponse() {
         return this;
     }
-
 }

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:Android="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/profile_portrait"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/profile"
+        android:clickable="true" />
+
+    <TextView
+        android:id="@+id/profile_myName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Huiyu Yang"
+        android:typeface="monospace"
+        android:layout_marginTop="5dp"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/profile_aboutMe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="简介: about me" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="1.0dip"
+            android:shrinkColumns="0"
+            android:stretchColumns="0">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_marginLeft="2.0dip"
+                android:layout_marginRight="2.0dip"
+                android:clickable="true"
+                android:paddingBottom="16.0dip"
+                android:paddingTop="16.0dip">
+
+                <TextView
+                    android:id="@+id/profile_email_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@drawable/ic_email_black_24dp"
+                    android:drawablePadding="10.0dip"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingLeft="17.0dip"
+                    android:text="huiyu.yang@sjsu.edu"
+                    android:textColor="#ff333333"
+                    android:textSize="16.0sp"/>
+
+                <ImageButton
+                    android:id="@+id/profile_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="right"
+                    android:gravity="center_vertical"
+                    android:paddingRight="20.0dip"
+                    android:src="@drawable/ic_mode_edit_black_24dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_marginLeft="2.0dip"
+                android:layout_marginRight="2.0dip"
+                android:clickable="true"
+                android:paddingBottom="16.0dip"
+                android:paddingTop="16.0dip">
+
+                <TextView
+                    android:id="@+id/profile_location_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@drawable/ic_room_black_24dp"
+                    android:drawablePadding="10.0dip"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingLeft="17.0dip"
+                    android:text="374 s 10th st., San Jose, CA, 95112"
+                    android:textColor="#ff333333"
+                    android:textSize="16.0sp"/>
+
+                <ImageButton
+                    android:id="@+id/profile_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="right"
+                    android:gravity="center_vertical"
+                    android:paddingRight="20.0dip"
+                    android:src="@drawable/ic_mode_edit_black_24dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_marginLeft="2.0dip"
+                android:layout_marginRight="2.0dip"
+                android:clickable="true"
+                android:paddingBottom="16.0dip"
+                android:paddingTop="16.0dip">
+
+                <TextView
+                    android:id="@+id/profile_profession_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@drawable/ic_work_black_24dp"
+                    android:drawablePadding="10.0dip"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingLeft="17.0dip"
+                    android:text="Student"
+                    android:textColor="#ff333333"
+                    android:textSize="16.0sp"/>
+
+                <ImageButton
+                    android:id="@+id/profile_profession"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="right"
+                    android:gravity="center_vertical"
+                    android:paddingRight="20.0dip"
+                    android:src="@drawable/ic_mode_edit_black_24dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_marginLeft="2.0dip"
+                android:layout_marginRight="2.0dip"
+                android:clickable="true"
+                android:paddingBottom="16.0dip"
+                android:paddingTop="16.0dip">
+
+                <TextView
+                    android:id="@+id/profile_hobby_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@drawable/ic_favorite_black_24dp"
+                    android:drawablePadding="10.0dip"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingLeft="17.0dip"
+                    android:text="Longquan Li"
+                    android:textColor="#ff333333"
+                    android:textSize="16.0sp"/>
+
+                <ImageButton
+                    android:id="@+id/profile_hobby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="right"
+                    android:gravity="center_vertical"
+                    android:paddingRight="20.0dip"
+                    android:src="@drawable/ic_mode_edit_black_24dp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/profile_public"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="2.0dip"
+                android:layout_marginRight="2.0dip"
+                android:clickable="true"
+                android:paddingBottom="16.0dip"
+                android:paddingTop="16.0dip">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@drawable/ic_visibility_black_24dp"
+                    android:drawablePadding="10.0dip"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingLeft="17.0dip"
+                    android:text="Set twitter public"
+                    android:textColor="#ff333333"
+                    android:textSize="16.0sp"/>
+
+                <Switch
+                    android:id="@+id/visibility"
+                    android:layout_width="24dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="center_vertical"
+                    android:scaleType="fitStart"
+                    android:paddingRight="20.0dip"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_marginLeft="2.0dip"
+                android:layout_marginRight="2.0dip"
+                android:clickable="true"
+                android:paddingBottom="16.0dip"
+                android:paddingTop="16.0dip">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@drawable/ic_add_alert_black_24dp"
+                    android:drawablePadding="10.0dip"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingLeft="17.0dip"
+                    android:text="Set Notification"
+                    android:textColor="#ff333333"
+                    android:textSize="16.0sp"/>
+
+                <Switch
+                    android:id="@+id/profile_notification"
+                    android:layout_width="24dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="center_vertical"
+                    android:scaleType="fitStart"
+                    android:paddingRight="20.0dip"/>
+
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
+
+
+</LinearLayout>

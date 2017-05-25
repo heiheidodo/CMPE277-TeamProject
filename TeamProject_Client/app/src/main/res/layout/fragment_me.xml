@@ -1,13 +1,137 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cmpe277.sam.teamprojectclient.MeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <LinearLayout
+            android:id="@+id/profile_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/me_portrait"
+                android:scaleType="fitCenter"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:src="@drawable/profile" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/me_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Huiyu Yang"
+                    android:layout_marginTop="5dp"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/me_aboutMe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="简介: about me" />
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log Out"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <!-- First Button My Twitter-->
+
+        <FrameLayout
+            android:id="@+id/me_myPosts"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/me_myPosts_button"
+                android:layout_width="200dp"
+                android:layout_height="125dp"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center_horizontal"
+                android:background="@null"
+                android:src="@drawable/lan"/>
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="125dp"
+                android:gravity="center"
+                android:text="My Posts"
+                android:typeface="monospace"
+                android:textColor="#ff333333"
+                android:textSize="20sp"/>
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/me_message"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/me_message_button"
+                android:layout_width="200dp"
+                android:layout_height="125dp"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center_horizontal"
+                android:background="@null"
+                android:src="@drawable/lan"/>
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="125dp"
+                android:gravity="center"
+                android:text="Messages"
+                android:typeface="monospace"
+                android:textColor="#ff333333"
+                android:textSize="20sp"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/me_setting"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/me_setting_button"
+                android:layout_width="200dp"
+                android:layout_height="125dp"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center_horizontal"
+                android:background="@null"
+                android:src="@drawable/lan"/>
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="125dp"
+                android:gravity="center"
+                android:text="Set my profile"
+                android:typeface="monospace"
+                android:textColor="#ff333333"
+                android:textSize="20sp"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

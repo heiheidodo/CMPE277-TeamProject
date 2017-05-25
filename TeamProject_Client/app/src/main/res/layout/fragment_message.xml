@@ -5,6 +5,7 @@
 
     <ListView
         android:layout_width="match_parent"
+        android:id="@+id/lvMsg"
         android:layout_height="300dp"
         android:layout_above="@+id/btnMessage"
         android:layout_alignParentTop="true" />

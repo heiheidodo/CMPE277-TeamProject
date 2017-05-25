@@ -1,5 +1,6 @@
 package com.cmpe277.sam.teamprojectclient;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,13 +17,14 @@ public class ProfileActivity extends AppCompatActivity implements AsyncResponse{
     ListView lvPosts;
     TimelineAdapter postsAdapter;
     ArrayList<TimeLineModel> posts;
-    Button btnFollow, btnAdd;
+    Button btnFollow, btnAdd, btnMessage;
+    Activity self;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
+        self = this;
         ConnWorker connWorker = new ConnWorker();
         connWorker.delegate = getAsyncResponse();
         connWorker.execute("getPublicPosts", "/user/"+getIntent().getStringExtra("email")+"/from/"+UserInfo.getInstance().getEmail(), "GET");
@@ -34,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity implements AsyncResponse{
         lvPosts = (ListView) findViewById(R.id.lvPosts);
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnFollow = (Button) findViewById(R.id.btnFollow);
+        btnMessage = (Button) findViewById(R.id.btnMessage);
 
         posts = new ArrayList<>();
         TimeLineModel testModel = new TimeLineModel();
@@ -61,6 +64,15 @@ public class ProfileActivity extends AppCompatActivity implements AsyncResponse{
                 connWorker.execute("addFriendRequest", "/user/"+UserInfo.getInstance().getEmail()+"/follow/"+tvEmail.getText().toString(), "PUT");
             }
         });
+
+        btnMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MessageDialog messageDialog = new MessageDialog(self, tvEmail.getText().toString(), tvName.getText().toString());
+                messageDialog.show();
+            }
+        });
+
     }
 
 

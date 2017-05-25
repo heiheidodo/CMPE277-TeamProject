@@ -93,7 +93,7 @@ public class FriendFragment extends Fragment implements  AsyncResponse{
 
     @Override
     public void getResponse(String str) {
-        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -109,4 +109,6 @@ public class FriendFragment extends Fragment implements  AsyncResponse{
     public AsyncResponse getAsyncResponse(){
         return this;
     }
+
+
 }

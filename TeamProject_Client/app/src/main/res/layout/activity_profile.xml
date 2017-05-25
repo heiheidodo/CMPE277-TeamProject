@@ -57,6 +57,12 @@
             android:text="follow"
             android:id="@+id/btnFollow"/>
 
+        <Button
+            android:id="@+id/btnMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="message" />
+
     </LinearLayout>
 
 

@@ -9,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sam on 5/22/17.
@@ -26,6 +24,8 @@ public class PendingAdapter extends ArrayAdapter {
     int resource;
     ViewHolder holder;
     Context context;
+    CallbackToPendingAct callback;
+
 
     public PendingAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList objects) {
         super(context, resource, objects);
@@ -49,7 +49,7 @@ public class PendingAdapter extends ArrayAdapter {
                 @Override
                 public void onClick(View v) {
                     ConnWorker connWorker = new ConnWorker();
-                    connWorker.delegate = ((PendingActivity) context).getAsyncResponse();
+                    connWorker.delegate = callback.getResponse();
                     connWorker.execute("addFriendRequest", "/user/"+UserInfo.getInstance().getEmail()+"/accept/"+holder.tvEmail.getText().toString(), "PUT");
                 }
             });
@@ -57,7 +57,7 @@ public class PendingAdapter extends ArrayAdapter {
                 @Override
                 public void onClick(View v) {
                     ConnWorker connWorker = new ConnWorker();
-                    connWorker.delegate = ((PendingActivity) context).getAsyncResponse();
+                    connWorker.delegate = callback.getResponse();
                     connWorker.execute("addFriendRequest", "/user/"+UserInfo.getInstance().getEmail()+"/deny/"+holder.tvEmail.getText().toString(), "PUT");
                 }
             });
@@ -74,6 +74,14 @@ public class PendingAdapter extends ArrayAdapter {
         public TextView tvEmail;
         public Button btnAccept;
         public Button btnDeny;
+    }
+
+    public interface CallbackToPendingAct{
+        public AsyncResponse getResponse();
+    }
+
+    public void setCallback(CallbackToPendingAct callback){
+        this.callback = callback;
     }
 
 }
