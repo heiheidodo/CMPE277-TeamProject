@@ -18,6 +18,7 @@
     "mongodb": "latest",
     "time-stamp": "latest",
     "express-session": "latest",
-    "randomstring": "latest"
+    "randomstring": "latest",
+    "nodemailer": "latest"
   }
 }

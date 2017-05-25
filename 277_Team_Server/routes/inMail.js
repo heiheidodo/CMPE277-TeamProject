@@ -4,7 +4,8 @@
 var mongoDB = require("./mongodb"),
     collectionName = "inMail",
     timestamp = require('time-stamp'),
-    ObjectID = require('mongodb').ObjectID;
+    ObjectID = require('mongodb').ObjectID,
+    user = require("./user");
 
 exports.post = function (req, res) {
     
@@ -20,6 +21,7 @@ exports.post = function (req, res) {
         if (err) {
             console.log(err);
         } else {
+            user.sendInMail(req.body.toEmail);
             res.send({});
         }
 

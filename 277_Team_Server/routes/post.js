@@ -39,6 +39,7 @@ exports.create = function (req, res) {
         if (err) {
             res.send({posted: false});
         } else {
+            user.sendPostNotification(email);
             res.send({posted: true});
 	    }
     });

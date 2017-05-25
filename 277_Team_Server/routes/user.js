@@ -6,11 +6,42 @@ var mongoDB = require("./mongodb"),
     collectionName = "user",
     crypto = require('crypto'),
     post = require('./post'),
-    codeJsonArray = [];
+    codeJsonArray = [],
+    onlineJsonArray = [],
+    nodemailer = require('nodemailer'),
+    smtpConfig = {
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true, // use SSL
+        auth: {
+            user: 'gdtosilicon2016@gmail.com',
+            pass: 'cmpe275jb'
+        }
+    },
+    transporter = nodemailer.createTransport(smtpConfig);
 
-function sendEmail(code, email) {
-    /*  sendEmail  ------to be finished-------------------------*/
-}
+function sendmail(email, subject, text) {
+
+    var mailOptions = {
+        from: '"gdtosilicon2016@gmail.com', // sender address
+        to: email, // list of receivers
+        subject: subject, // Subject line
+        text: text // plain text body
+        //html: '<b>Warning!!!</b>' // html body
+    };
+    
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          return console.log(error);
+      }
+      console.log('Message %s sent: %s', info.messageId, info.response);
+    });
+
+};
+
+
+exports.sendmail = sendmail;
+
 
 function hasJsonObject(key, value, array) {
     var i = 0;
@@ -20,6 +51,75 @@ function hasJsonObject(key, value, array) {
     }
     
     return false;
+}
+
+
+function mergeTwoJsonArray(array1, array2, key) {
+    var i = 0,
+        j = 0,
+        newArray = [],
+        needPush = true,
+        json = {};
+    
+    console.log("array1");
+    console.log(array1);
+    console.log("array2");
+    console.log(array2);
+    
+    for (j = 0; j < array2.length; j = j + 1) {
+        json[key] = array2[j][key];
+        newArray.push(json);
+        json = {};
+    }
+    
+    for (i = 0; i < array1.length; i = i + 1) {
+        needPush = true;
+        
+        for (j = 0; j < array2.length; j = j + 1) {
+            
+            if (array1[i][key] === array2[j][key]) {
+                needPush = false;
+                break;
+            }
+        }
+        
+        if (needPush) { 
+            json[key] = array1[i][key];
+            newArray.push(json);
+            json = {};
+        }
+    }
+    
+    console.log("newArray");
+    console.log(newArray);
+    
+    return newArray;
+}
+
+function addOnline(email) {
+    if (hasJsonObject("email", email, onlineJsonArray)) {
+        return;
+    } else {
+        onlineJsonArray.push({email: email});
+        console.log("onlineArray");
+        console.log(onlineJsonArray);
+    }
+    
+    return;
+}
+
+function deleteOnline(email) {
+    
+    var i = 0;
+    console.log("deleteOnline");
+    
+    for (i = 0; i < onlineJsonArray.length; i = i + 1) {
+        if (onlineJsonArray[i].email === email) {
+            delete onlineJsonArray[i];
+            console.log(onlineJsonArray);
+            return;
+        }
+    }
 }
 
 function saveCode(email, code) {
@@ -50,6 +150,23 @@ function checkCode(email, code) {
     
 }
 
+function deleteCode(email) {
+    
+    var i = 0;
+    console.log("before remove");
+    console.log(codeJsonArray);
+    
+    for (i = 0; i < codeJsonArray.length; i = i + 1) {
+        if (email === codeJsonArray[i].email) {
+            delete codeJsonArray[i];
+            console.log("after remove");
+            console.log(codeJsonArray);
+        }
+    }
+    
+    
+}
+
 exports.create = function (req, res) {
     
     var email = req.body.email,
@@ -76,6 +193,8 @@ exports.create = function (req, res) {
                 console.log(code);
                 
                 saveCode(req.body.email, code);
+                
+                sendmail(req.body.email, "signUp pls verify fist!", "pls sign up with this code:" + code);
 
                 console.log(codeJsonArray);
                 res.send({dup: false});
@@ -132,6 +251,7 @@ exports.verify = function (req, res) {
             if (err) {
                 console.log(err);
             } else {
+                deleteCode(email);
                 res.send({verified: true});
             }
 
@@ -167,6 +287,33 @@ exports.isVerified = function (req, res) {
     });
 }; */
 
+exports.sendPostNotification = function (email) {
+    console.log("sendPostNotification");
+    var i = 0,
+        col = mongoDB.getdb().collection(collectionName);
+    
+    col.find({notification: "true"}).toArray(function (err, rows) {
+        
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(rows);
+            
+            for (i = 0; i < rows.length; i = i + 1) {
+                if (!hasJsonObject("email", rows[i].email, onlineJsonArray)) {
+                    if (hasJsonObject("email", email, rows[i].follow)) {
+                        sendmail(rows[i].email, "New Post", rows[i].screenName + " has created a new post, please sign in to view details.");
+                    }
+                }
+            }
+            
+        }
+        
+    });
+};
+
+
+
 
 exports.signIn = function (req, res) {
     
@@ -183,6 +330,7 @@ exports.signIn = function (req, res) {
             console.log(rows);
             if (rows) {
                 
+                addOnline(req.body.email);
                 res.send({verified: true});
                 
             } else {
@@ -196,6 +344,7 @@ exports.signIn = function (req, res) {
 
 exports.signOut = function (req, res) {
     res.send({msg: "Sign Out Successfully"});
+    deleteOnline(req.body.email);
 };
 
 exports.get = function (req, res) {
@@ -225,18 +374,41 @@ exports.get = function (req, res) {
     
 };
 
+function removeEmailFromJsonArray(array, email) {
+    var i = 0;
+    
+    for (i = 0; i < array.length; i = i + 1) {
+        if (email === array[i]["email"]) {
+            delete array[i];
+            return array;
+        }
+    }
+    
+    return array
+}
 
 
 exports.getUsers = function (req, res) {
-    var col = mongoDB.getdb().collection(collectionName);
+    var col = mongoDB.getdb().collection(collectionName),
+        email = req.params.email,
+        resArray = [];
     
-    col.find({visibility: "public"}).toArray(function (err, rows) {
+    col.find({visibility: "public"}).toArray(function (err, publicRows) {
         
         if (err) {
             console.log(err);
         } else {
-            console.log(rows);
-            res.send(rows);
+            console.log(publicRows);
+            
+            col.findOne({email: email}, function (err, user) {
+                console.log(user);
+                resArray = mergeTwoJsonArray(publicRows, user.friends, "email");
+                col.find({$or: resArray}).toArray(function (err, rows) {
+                    console.log(rows);
+                    rows = removeEmailFromJsonArray(rows, email);
+                    res.send(rows);
+                });                           
+            });
         }
         
     });
@@ -280,6 +452,9 @@ exports.request = function (req, res) {
             if (undefined !== userRows.email) {
                 if (hasJsonObject("email", email, userRows.pending)) {
                     res.send({msg: "Add successfully"});
+                } else if (hasJsonObject("email", email, userRows.friends)) {
+                    res.send({msg: "Friends already"});
+                    
                 } else {
                     col.updateOne({email: recipientEmail}, {$push: {pending: {email: email}}}, function (err, rows) {
         
@@ -306,20 +481,36 @@ exports.request = function (req, res) {
     
 };
 
+exports.sendInMail = function (email) {
+    
+    console.log("sendInMail" + email);
+    var col = mongoDB.getdb().collection(collectionName);
+    col.findOne({$and: [{email: email}, {notification: "true"}]}, function (err, rows) {
+        
+        if (err) {
+            
+        } else if (rows) {
+            sendmail(email, "New InMail", "You have a new InMail, please sign in to view detail.");
+        }
+        
+    });
+    
+};
+
 exports.accept = function (req, res) {
     
     var email = req.params.email,
         recipientEmail = req.params.recipientEmail,
         col = mongoDB.getdb().collection(collectionName);
     
-    col.updateOne({email: email}, {$push: {friends: {email: recipientEmail}}, $pull: {pending: recipientEmail}}, function (err, rows) {
+    col.updateOne({email: email}, {$push: {friends: {email: recipientEmail}}, $pull: {pending: {email: recipientEmail}}}, function (err, rows) {
         
         if (err) {
             console.log(err);
         } else {
             console.log(rows);
             
-            col.updateOne({email: recipientEmail}, {$push: {friends: {email: email}}, $pull: {pending: email}}, function (err, rows) {
+            col.updateOne({email: recipientEmail}, {$push: {friends: {email: email}}, $pull: {pending: {email: email}}}, function (err, rows) {
                 
                 if (err) {
                     console.log(err);
@@ -342,14 +533,14 @@ exports.deny = function (req, res) {
         recipientEmail = req.params.recipientEmail,
         col = mongoDB.getdb().collection(collectionName);
     
-    col.updateOne({email: email}, {$pull: {pending: recipientEmail}}, function (err, rows) {
+    col.updateOne({email: email}, {$pull: {pending: {email: recipientEmail}}}, function (err, rows) {
         
         if (err) {
             console.log(err);
         } else {
             console.log(rows);
             
-            col.updateOne({email: recipientEmail}, {$pull: {pending: email}}, function (err, rows) {
+            col.updateOne({email: recipientEmail}, {$pull: {pending: {email: email}}}, function (err, rows) {
                 
                 if (err) {
                     console.log(err);
@@ -385,39 +576,7 @@ exports.follow = function (req, res) {
     
 };
 
-function mergeTwoJsonArray(array1, array2, key) {
-    var i = 0,
-        j = 0,
-        newArray = [],
-        needPush = true;
-    
-    console.log("array1");
-    console.log(array1);
-    console.log("array2");
-    console.log(array2);
-    
-    for (j = 0; j < array2.length; j = j + 1) {
-        newArray.push(array2[j]);
-    }
-    
-    for (i = 0; i < array1.length; i = i + 1) {
-        
-        for (j = 0; j < array2.length; j = j + 1) {
-            
-            if (array1[i][key] === array2[i][key]) {
-                needPush = false;
-                break;
-            }
-        }
-        
-        if (needPush) { newArray.push(array1[i]); }
-    }
-    
-    console.log("newArray");
-    console.log(newArray);
-    
-    return newArray;
-}
+
 
 exports.getVisiblePosterEmails = function (email, callback) {
     

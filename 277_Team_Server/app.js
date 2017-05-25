@@ -47,7 +47,7 @@ app.post("/user/signIn", user.signIn);
 app.post("/user/signOut", user.signOut);
 //app.get("/user/isVerified/:email", user.isVerified);
 app.get("/user/:email", user.get);
-app.get("/users", user.getUsers);
+app.get("/users/:email", user.getUsers);
 app.get("/users/:email/pending", user.getPendingUsers);
 app.put("/user/:email/request/:recipientEmail", user.request);
 app.put("/user/:email/accept/:recipientEmail", user.accept);
