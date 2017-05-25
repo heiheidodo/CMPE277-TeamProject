@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class MeFragment extends Fragment implements AsyncResponse{
     private ImageButton me_message_button;
     private ImageButton me_myPosts_button;
     private ImageButton me_setting_button;
+    Button btnLogout;
 
     public MeFragment() {
     }
@@ -39,17 +41,17 @@ public class MeFragment extends Fragment implements AsyncResponse{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("create fragement me layout from asdasdsdasd");
-        View view = inflater.inflate(R.layout.fragment_me, container, false);
         ConnWorker connWorker = new ConnWorker();
         connWorker.delegate = getResponse();
         connWorker.execute("getMe", "/user", "GET");
         SystemClock.sleep(500);
+        System.out.println("create fragement me layout from asdasdsdasd");
+        View view = inflater.inflate(R.layout.fragment_me, container, false);
         mContext = getContext();
         UserInfo user = UserInfo.getInstance();
 
         portrait_image_button = (ImageButton)view.findViewById(R.id.me_portrait);
-//        portrait_image_button.setImageBitmap(ProfileSettingActivity.getImage());
+        portrait_image_button.setImageBitmap(ProfileSettingActivity.getImage());
         portrait_image_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -85,6 +87,15 @@ public class MeFragment extends Fragment implements AsyncResponse{
             @Override
             public void onClick(View v) {
                 //To my Message!!!!!!!!!!!!
+            }
+        });
+
+        btnLogout = (Button) view.findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), SignUpActivity.class));
+
             }
         });
 

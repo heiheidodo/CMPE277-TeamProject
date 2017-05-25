@@ -383,6 +383,7 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                     itemModel.setToScreenName(msgItem.getString("toScreenName"));
                     itemModel.setMessage(msgItem.getString("message"));
                     itemModel.setTime(msgItem.getString("time"));
+                    itemModel.setId(msgItem.getString("_id"));
                     returnArr.add(itemModel);
                 }
                 if(responseJson.length() != 0) return "get mail list success";
@@ -509,15 +510,33 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 System.out.println(responseJson);
 
                 System.out.println("^^^^^^^^^^^^^^^^^");
-                String aboutMe = (String)responseJson.get("aboutMe");
-                String location = (String)responseJson.get("location");
-                String hobby = (String)responseJson.get("hobby");
-                String visibility = (String)responseJson.get("visibility");
+                String aboutMe = "null";
+                if(responseJson.has("aboutMe")) {
+                    aboutMe = (String)responseJson.get("aboutMe");
+                }
+                String location = "null";
+                if (responseJson.has("location")) {
+                    location = (String)responseJson.get("location");
+                }
+                String hobby = "null";
+                if (responseJson.has("hobby")) {
+                    hobby = (String)responseJson.get("hobby");
+                }
+                String visibility = "public";
+                if (responseJson.has("visibility")) {
+                    visibility = (String)responseJson.get("visibility");
+                }
                 String name = (String)responseJson.get("screenName");
                 String email = (String)responseJson.get("email");
-                String profession = (String)responseJson.get("profession");
+                String profession = "null";
+                if (responseJson.has("visibility")) {
+                    profession = (String)responseJson.get("profession");
+                }
                 String portrait = (String)responseJson.get("portrait");
-                String notification = (String)responseJson.get("notification");
+                String notification = "true";
+                if (responseJson.has("notification")) {
+                    notification = (String)responseJson.get("notification");
+                }
                 System.out.println("----------------->notificaion: " + notification);
 
                 UserInfo user = UserInfo.getInstance();
@@ -588,6 +607,30 @@ public class ConnWorker extends AsyncTask<String, Integer, String> {
                 }
                 if(responseJson.length() != 0) return "post success";
                 else return "post fail";
+            }else if(param[0] == "deleteMail"){
+
+                URL url = new URL(basicUrl+param[1]);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setReadTimeout(10000000);
+                conn.setConnectTimeout(15000000);
+                conn.setRequestMethod(param[2]);
+                conn.setDoInput(true);
+//                conn.setDoOutput(true);
+
+                InputStream responseStream = new BufferedInputStream(conn.getInputStream());
+                BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(responseStream));
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseStreamReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                responseStreamReader.close();
+                String response = stringBuilder.toString();
+                returnArr = new ArrayList<>();
+                if(response.length() != 0) return "delete success";
+                else return "delete fail";
             }
 
 

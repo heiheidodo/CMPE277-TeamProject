@@ -10,6 +10,8 @@ public class MessageModel {
     String toScreenName;
     String message;
     String time;
+    String id;
+
 
     public String getFromScreenName() {
         return fromScreenName;
@@ -42,6 +44,10 @@ public class MessageModel {
     public void setTime(String time) {
         this.time = time;
     }
+
+    public void setId(String id){this.id = id;}
+
+    public String getId(){return id;}
 
 
 }

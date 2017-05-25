@@ -45,17 +45,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Make a Badge for the first tab, with red background color and a value of "4".
-        BottomBarBadge unreadMessages = bottomBar.makeBadgeForTabAt(1, "#E91E63", 4);
-
-        // Control the badge's visibility
-        unreadMessages.show();
-        //unreadMessages.hide();
-
-        // Change the displayed count for this badge.
-        //unreadMessages.setCount(4);
-
-        // Change the show / hide animation duration.
-        unreadMessages.setAnimationDuration(200);
+//        BottomBarBadge unreadMessages = bottomBar.makeBadgeForTabAt(1, "#E91E63", 4);
+//
+//        // Control the badge's visibility
+//        unreadMessages.show();
+//        //unreadMessages.hide();
+//
+//        // Change the displayed count for this badge.
+//        //unreadMessages.setCount(4);
+//
+//        // Change the show / hide animation duration.
+//        unreadMessages.setAnimationDuration(200);
 
         // If you want the badge be shown always after unselecting the tab that contains it.
         //unreadMessages.setAutoShowAfterUnSelection(true);

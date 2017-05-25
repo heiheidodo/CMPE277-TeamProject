@@ -51,6 +51,7 @@ public class MessageDialog extends Dialog implements AsyncResponse{
                 ConnWorker connWorker = new ConnWorker();
                 connWorker.delegate = getAsyncResponse();
                 connWorker.execute("sendMessage", "/inMail", "POST", UserInfo.getInstance().getEmail(), UserInfo.getInstance().getScreenName(), toEmail, toScreenName, etSubject.getText().toString(), etContent.getText().toString());
+
             }
         });
     }

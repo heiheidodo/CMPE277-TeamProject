@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MessageFragment extends Fragment implements AsyncResponse{
+public class MessageFragment extends Fragment implements AsyncResponse, MessageAdapter.CallbackToMsgFragment{
 
     Button btnMessage;
     ListView lvMessage;
@@ -46,6 +46,7 @@ public class MessageFragment extends Fragment implements AsyncResponse{
 
         lvMessage = (ListView) view.findViewById(R.id.lvMsg);
         adapter = new MessageAdapter(getContext(), R.layout.message_item, itemList);
+        adapter.setCallback(this);
         lvMessage.setAdapter(adapter);
 
         btnMessage = (Button) view.findViewById(R.id.btnMessage);
@@ -76,5 +77,10 @@ public class MessageFragment extends Fragment implements AsyncResponse{
             adapter.addAll(array);
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public AsyncResponse getResponse() {
+        return this;
     }
 }

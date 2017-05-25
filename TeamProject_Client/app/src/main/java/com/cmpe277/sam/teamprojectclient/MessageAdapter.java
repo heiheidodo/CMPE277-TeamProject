@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class MessageAdapter extends ArrayAdapter {
     ArrayList<MessageModel> messagelist;
     int resource;
     MessageAdapter.ViewHolder holder;
+    CallbackToMsgFragment callback;
 
     public MessageAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList objects) {
         super(context, resource, objects);
@@ -32,7 +34,7 @@ public class MessageAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         View v = convertView;
         if(v == null){
@@ -42,6 +44,7 @@ public class MessageAdapter extends ArrayAdapter {
             holder.tvToScreenName = (TextView) v.findViewById(R.id.tvToEmail);
             holder.tvContent = (TextView) v.findViewById(R.id.tvContent);
             holder.tvTime = (TextView) v.findViewById(R.id.tvTime);
+            holder.btnDelete = (Button) v.findViewById(R.id.btnDelete);
             v.setTag(holder);
         }else{
             holder = (MessageAdapter.ViewHolder) v.getTag();
@@ -52,6 +55,15 @@ public class MessageAdapter extends ArrayAdapter {
         holder.tvContent.setText(messagelist.get(position).getMessage());
         holder.tvTime = (TextView) v.findViewById(R.id.tvTime);
 
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConnWorker connWorker = new ConnWorker();
+                connWorker.delegate = callback.getResponse();
+                connWorker.execute("deleteMail", "/inMail/"+messagelist.get(position).getId(), "DELETE");
+            }
+        });
+
         return v;
     }
 
@@ -60,5 +72,14 @@ public class MessageAdapter extends ArrayAdapter {
         public TextView tvToScreenName;
         public TextView tvContent;
         public TextView tvTime;
+        public Button btnDelete;
+    }
+
+    public interface CallbackToMsgFragment{
+        public AsyncResponse getResponse();
+    }
+
+    public void setCallback(MessageAdapter.CallbackToMsgFragment callback){
+        this.callback = callback;
     }
 }
