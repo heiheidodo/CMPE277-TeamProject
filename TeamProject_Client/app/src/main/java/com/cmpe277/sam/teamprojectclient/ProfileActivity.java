@@ -80,14 +80,17 @@ public class ProfileActivity extends AppCompatActivity implements AsyncResponse{
     public void getResponse(String str) {
 //        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
         //add follow
-        if(str == "falsetrue"){
+        if(str == null) return;
+        System.out.println("can add or follow? "+str);
+        if(str.equals("falsetrue")){
             btnAdd.setVisibility(View.GONE);
-        }else if(str == "truefalse"){
+        }else if(str.equals("truefalse")){
             btnFollow.setVisibility(View.GONE);
-        }else if(str == "falsefalse"){
+        }else if(str.equals("falsefalse")){
             btnAdd.setVisibility(View.GONE);
             btnFollow.setVisibility(View.GONE);
         }
+
     }
 
     @Override
