@@ -66,7 +66,7 @@ exports.getUserTimeline = function (req, res) {
     user.getVisiblePosterEmails(email, function (err, emails) {
         var col = mongoDB.getdb().collection(collectionName);
    
-        col.find({email: email}).sort({time: -1}).toArray(function (err, results) {
+        col.find({$or: emails}).sort({time: -1}).toArray(function (err, results) {
             if (err) {
                 console.log(err);
             } else {
