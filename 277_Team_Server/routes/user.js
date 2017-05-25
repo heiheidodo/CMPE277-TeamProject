@@ -114,6 +114,7 @@ function deleteOnline(email) {
     console.log("deleteOnline");
     
     for (i = 0; i < onlineJsonArray.length; i = i + 1) {
+        if (null == onlineJsonArray[i]) { continue; }
         if (onlineJsonArray[i].email === email) {
             delete onlineJsonArray[i];
             console.log(onlineJsonArray);
@@ -157,6 +158,8 @@ function deleteCode(email) {
     console.log(codeJsonArray);
     
     for (i = 0; i < codeJsonArray.length; i = i + 1) {
+        
+        if (null == codeJsonArray[i]) {continue; }
         if (email === codeJsonArray[i].email) {
             delete codeJsonArray[i];
             console.log("after remove");
@@ -375,16 +378,18 @@ exports.get = function (req, res) {
 };
 
 function removeEmailFromJsonArray(array, email) {
-    var i = 0;
+    var i = 0,
+        resArray = [];
     
     for (i = 0; i < array.length; i = i + 1) {
         if (email === array[i]["email"]) {
-            delete array[i];
-            return array;
+            continue;
         }
+        
+        resArray.push(array[i]);
     }
     
-    return array
+    return resArray
 }
 
 
