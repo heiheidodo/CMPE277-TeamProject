@@ -73,3 +73,22 @@ app.put("/user/:email/follow/:recipientEmail", user.follow);<br>
 return {}<br>
 app.get("/user/:anotherEmail/from/:email", user.getAnotherUser);<br>
 another user information json<br>
+<br>
+app.post("/inMail", inMail.post); <br>
+body: <br>
+{
+ "fromEmail" : "aaa@aaa.g",
+ "fromScreenName": "aaaa",
+ "toEmail": "bbb@bbb.g",
+ "toScreenName": "bbb",
+ "message": "xxxxxxxx"
+}
+
+app.get("/inMail/:email", inMail.get); <br>
+return inMail jsonArray
+
+app.delete("/inMail/:id", inMail.del);
+
+
+app.post("/post", post.create);
+app.get("/post/:email/timeline", post.getUserTimeline);
