@@ -89,6 +89,6 @@ return inMail jsonArray
 
 app.delete("/inMail/:id", inMail.del);
 
-
-app.post("/post", post.create);
+<br>
+app.post("/post", post.create); <br>
 app.get("/post/:email/timeline", post.getUserTimeline);
