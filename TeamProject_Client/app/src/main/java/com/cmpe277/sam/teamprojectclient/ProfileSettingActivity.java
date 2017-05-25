@@ -168,6 +168,7 @@ public class ProfileSettingActivity extends Activity implements AsyncResponse{
                 myPortrait.setImageBitmap(portrait);
 
                 ConnWorker connWorker = new ConnWorker();
+                connWorker.delegate = getAsyncResponse();
                 System.out.println("----------------> connWork initiated");
                 connWorker.execute("updateMe", "/user", "PUT", null, null, null,null,null, toBase64(portrait),null);
 
@@ -233,6 +234,7 @@ public class ProfileSettingActivity extends Activity implements AsyncResponse{
                     String str = input.getText().toString();
                     aboutMe.setText(str);
                     ConnWorker connWorker = new ConnWorker();
+                    connWorker.delegate = getAsyncResponse();
                     System.out.println("----------------> connWork initiated");
                     connWorker.execute("updateMe", "/user", "PUT", str, null, null,null,null,null,null);
 
@@ -253,6 +255,7 @@ public class ProfileSettingActivity extends Activity implements AsyncResponse{
         public void onClick(View v) {
 
             ConnWorker connWorker = new ConnWorker();
+            connWorker.delegate = getAsyncResponse();
             connWorker.execute("getMe", "/user", "GET");
             /*
             System.out.println("------------> name");
@@ -305,6 +308,7 @@ public class ProfileSettingActivity extends Activity implements AsyncResponse{
                     String str = input.getText().toString();
                     myLocationText.setText(str);
                     ConnWorker connWorker = new ConnWorker();
+                    connWorker.delegate = getAsyncResponse();
                     System.out.println("----------------> connWork initiated");
                     connWorker.execute("updateMe", "/user", "PUT", null, str, null,null,null, null,null);
 
@@ -335,6 +339,7 @@ public class ProfileSettingActivity extends Activity implements AsyncResponse{
                     String str = input.getText().toString();
                     myProfessionText.setText(str);
                     ConnWorker connWorker = new ConnWorker();
+                    connWorker.delegate = getAsyncResponse();
                     System.out.println("----------------> connWork initiated");
                     connWorker.execute("updateMe", "/user", "PUT", null, null, str,null,null, null,null);
 
@@ -366,6 +371,7 @@ public class ProfileSettingActivity extends Activity implements AsyncResponse{
                     String str = input.getText().toString();
                     myHobbyText.setText(str);
                     ConnWorker connWorker = new ConnWorker();
+                    connWorker.delegate = getAsyncResponse();
                     System.out.println("----------------> connWork initiated");
                     connWorker.execute("updateMe", "/user", "PUT", null, null, null,str,null, null,null);
 
@@ -387,12 +393,14 @@ public class ProfileSettingActivity extends Activity implements AsyncResponse{
             if (isChecked) {
                 System.out.println("&&&&&&&&&&&&&&&&&&&&& set public!");
                 ConnWorker connWorker = new ConnWorker();
+                connWorker.delegate = getAsyncResponse();
                 System.out.println("----------------> connWork initiated");
                 connWorker.execute("updateMe", "/user", "PUT", null, null, null,null,"public", null,null);
 
             } else {
                 System.out.println("&&&&&&&&&&&&&&&&&&&&& set private!");
                 ConnWorker connWorker = new ConnWorker();
+                connWorker.delegate = getAsyncResponse();
                 System.out.println("----------------> connWork initiated");
                 connWorker.execute("updateMe", "/user", "PUT", null, null, null,null,"private", null,null);
             }
@@ -405,12 +413,14 @@ public class ProfileSettingActivity extends Activity implements AsyncResponse{
             if (isChecked) {
                 System.out.println("&&&&&&&&&&&&&&&&&&&&& notification!");
                 ConnWorker connWorker = new ConnWorker();
+                connWorker.delegate = getAsyncResponse();
                 System.out.println("----------------> connWork initiated");
                 connWorker.execute("updateMe", "/user", "PUT", null, null, null, null, null, null, "true");
 
             } else {
                 System.out.println("&&&&&&&&&&&&&&&&&&&&& no notification!");
                 ConnWorker connWorker = new ConnWorker();
+                connWorker.delegate = getAsyncResponse();
                 System.out.println("----------------> connWork initiated");
                 connWorker.execute("updateMe", "/user", "PUT", null, null, null, null, null, null, "false");
             }

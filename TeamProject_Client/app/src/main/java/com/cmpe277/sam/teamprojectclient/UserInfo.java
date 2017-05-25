@@ -13,9 +13,9 @@ public class UserInfo {
     String location;
     String profession;
     String hobby;
-    String visibility;
+    String visibility = "public";
     String portrait;
-    String notification;
+    String notification = "true";
     private static UserInfo instance;
 
     public String getScreenName() {
